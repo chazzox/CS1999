@@ -45,6 +45,12 @@ body {
   margin: 5px;
 }
 
+.spacer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .spacer > a:hover {
   background-color: var(--primaryAccentBackground);
 }
