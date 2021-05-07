@@ -11,13 +11,13 @@ body {
 }
 
 :root {
-  --primaryBackground: rgb(32, 34, 37);
+  --primaryBackground: #202225;
   --secondaryBackground: rgb(20, 20, 26);
   --tertiaryBackground: rgb(39, 41, 44);
-  --primaryAccentBackground: rgb(88, 94, 254);
+  --primaryAccentBackground: #585efe;
   --secondaryAccentBackground: rgb(52, 58, 64);
   --tertiaryAccentBackground: rgb(46, 50, 94);
-  --primaryText: rgb(255, 255, 255);
+  --primaryText: #ffffff;
   --secondaryText: rgba(255, 255, 255, 0.66);
   --tertiaryText: rgba(255, 255, 255, 0.4);
   --buttonTextColor: rgb(255, 255, 255);
@@ -35,14 +35,8 @@ body {
   text-align: center;
 }
 
-.spacer > a {
-  text-decoration: none;
-  border: 1px solid var(--borderColor);
-  transition: background-color 0.2s;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: bold;
-  margin: 5px;
+.main-content > p {
+  padding: 5px 20px;
 }
 
 .spacer {
@@ -51,10 +45,33 @@ body {
   justify-content: center;
 }
 
-.spacer > a:hover {
+.spacer > a,
+.button {
+  text-decoration: none;
+  background: none;
+  border: 1px solid var(--borderColor);
+  transition: background-color 0.2s;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin: 5px;
+}
+
+.spacer > a:hover,
+.button:hover {
   background-color: var(--primaryAccentBackground);
 }
 
-.main-content > p {
-  padding: 5px 20px;
+input[type="text"] {
+  padding: 10px;
+  background: var(--secondaryAccentBackground);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: large;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  background-color: var(--primaryAccentBackground);
 }
