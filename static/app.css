@@ -45,7 +45,6 @@ body {
   justify-content: center;
 }
 
-.spacer > a,
 .button {
   text-decoration: none;
   background: none;
@@ -57,7 +56,6 @@ body {
   margin: 5px;
 }
 
-.spacer > a:hover,
 .button:hover {
   background-color: var(--primaryAccentBackground);
 }
