@@ -29,6 +29,7 @@ def create_buggy():
     elif request.method == "POST":
         msg = ""
         qty_wheels = request.form["qty_wheels"]
+        print(request.form)
         try:
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()

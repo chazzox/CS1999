@@ -11,13 +11,13 @@ body {
 }
 
 :root {
-  --primaryBackground: #202225;
+  --primaryBackground: rgb(32, 34, 37);
   --secondaryBackground: rgb(20, 20, 26);
   --tertiaryBackground: rgb(39, 41, 44);
-  --primaryAccentBackground: #585efe;
+  --primaryAccentBackground: rgb(88, 94, 254);
   --secondaryAccentBackground: rgb(52, 58, 64);
   --tertiaryAccentBackground: rgb(46, 50, 94);
-  --primaryText: #ffffff;
+  --primaryText: rgb(255, 255, 255);
   --secondaryText: rgba(255, 255, 255, 0.66);
   --tertiaryText: rgba(255, 255, 255, 0.4);
   --buttonTextColor: rgb(255, 255, 255);

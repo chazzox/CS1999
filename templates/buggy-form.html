@@ -5,11 +5,22 @@
 <form action="/new" method="post" autocomplete="off">
   <label for="qty_wheels">Number of wheels:</label>
   <input type="text" name="qty_wheels" />
+  <label for="power_type">Primary motive power:</label>
+  <select name="power_type">
+    <option value="petrol">petrol</option>
+    <option value="fusion">fusion</option>
+    <option value="steam">steam</option>
+    <option value="bio">bio</option>
+    <option value="electric">electric</option>
+    <option value="rocket">rocket</option>
+    <option value="hamster">hamster</option>
+    <option value="thermo">thermo</option>
+    <option value="solar">solar</option>
+    <option value="wind">wind</option>
+  </select>
   <input type="submit" class="button" />
 </form>
 
-<p>
-  <a href="/" class="button">home</a>
-</p>
+<a href="/" class="button">home</a>
 
 {% endblock %}
