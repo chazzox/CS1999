@@ -4,7 +4,7 @@
 
 <form action="/new" method="post" autocomplete="off">
   <label for="qty_wheels">Number of wheels:</label>
-  <input type="text" name="qty_wheels" />
+  <input type="number" name="qty_wheels" min="4" step="2" />
   <label for="power_type">Primary motive power:</label>
   <select name="power_type">
     <option value="petrol">petrol</option>

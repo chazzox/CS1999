@@ -60,16 +60,28 @@ body {
   background-color: var(--primaryAccentBackground);
 }
 
-input[type="text"] {
+input[type="number"] {
   padding: 10px;
   background: var(--secondaryAccentBackground);
   border: none;
   border-radius: 8px;
   font-weight: 500;
   font-size: large;
+  width: 100px;
 }
 
-input[type="text"]:focus {
+input[type="number"]:focus {
   outline: none;
   background-color: var(--primaryAccentBackground);
+}
+
+select {
+  padding: 10px;
+  background: var(--secondaryAccentBackground);
+  border: none;
+  border-radius: 8px;
+}
+
+select:focus {
+  outline: none;
 }
