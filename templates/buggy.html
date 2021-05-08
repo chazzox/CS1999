@@ -2,6 +2,7 @@
 
 <h1>Buggy</h1>
 
+<!-- find a way to use better templating techniques here, adding a new row for every new property ain't it -->
 <table>
   <tr>
     <td>ID:</td>
@@ -11,10 +12,12 @@
     <td>Wheels:</td>
     <td>{{ buggy['qty_wheels'] }}</td>
   </tr>
+  <tr>
+    <td>Power type:</td>
+    <td>{{buggy['power_type']}}</td>
+  </tr>
 </table>
 
-<p>
-  <a href="/" class="button">home</a>
-</p>
+<a href="/" class="button">home</a>
 
 {% endblock %}
