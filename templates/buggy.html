@@ -2,22 +2,14 @@
 
 <h1>Buggy</h1>
 
-<!-- find a way to use better templating techniques here, adding a new row for every new property ain't it -->
 <table>
+  {% for key, value in dict(buggy).items() %}
   <tr>
-    <td>ID:</td>
-    <td>{{ buggy['id'] }}</td>
+    <td>{{key}}:</td>
+    <td>{{value}}</td>
   </tr>
-  <tr>
-    <td>Wheels:</td>
-    <td>{{ buggy['qty_wheels'] }}</td>
-  </tr>
-  <tr>
-    <td>Power type:</td>
-    <td>{{buggy['power_type']}}</td>
-  </tr>
+  {% endfor %}
 </table>
-
 <a href="/" class="button">home</a>
 
 {% endblock %}
