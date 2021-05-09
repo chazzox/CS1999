@@ -61,13 +61,13 @@ body {
 }
 
 input[type="number"] {
-  padding: 10px;
+  padding: 4px 8px;
   background: var(--secondaryAccentBackground);
   border: none;
   border-radius: 8px;
   font-weight: 500;
   font-size: large;
-  width: 100px;
+  width: 60px;
 }
 
 input[type="number"]:focus {
@@ -76,7 +76,7 @@ input[type="number"]:focus {
 }
 
 select {
-  padding: 10px;
+  padding: 8px;
   background: var(--secondaryAccentBackground);
   border: none;
   border-radius: 8px;
