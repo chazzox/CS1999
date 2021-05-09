@@ -89,9 +89,7 @@ def summary():
     buggies = dict(
         zip([column[0] for column in cur.description], cur.fetchone())
     ).items()
-    return jsonify(
-        {key: val for key, val in buggies if (val != "" and val is not None)}
-    )
+    return jsonify(dict(buggies))
 
 
 @app.errorhandler(404)
