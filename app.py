@@ -26,7 +26,7 @@ def create_buggy():
         msg = ""
         print(request.form)
 
-        validationReturned = validate.validate_data(request.form)
+        validationReturned = validate.validate_data(dict(request.form))
         print("valid or not: ", validationReturned)
         if validationReturned[0]:
             try:
