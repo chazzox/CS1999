@@ -88,4 +88,10 @@ schema = {
     "$id": "buggy",
 }
 
-print(validate(instance={"id": 2, "qty_wheels": 4}, schema=schema))
+
+def validate_data(data):
+    try:
+        validate(instance=data, schema=schema)
+    except Exception as error_msg:
+        return (False, error_msg)
+    return (True, "")

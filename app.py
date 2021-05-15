@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3 as sql
+import validate
 
 # Initialise websever
 app = Flask(__name__)
@@ -21,46 +22,30 @@ def create_buggy():
         return render_template("buggy-form.html")
     elif request.method == "POST":
         # TODO: rewrite the validation method and create error message. Maybe use class?
-        valid = True
+
         msg = ""
         print(request.form)
-        # get our values from the form that we want to add to the database
-        qty_wheels = request.form["qty_wheels"]
-        power_type = request.form["power_type"]
-        # TODO: improve this god awful way of validating form data
-        valid = qty_wheels.strip().isdigit() and (
-            power_type
-            in [
-                "petrol",
-                "fusion",
-                "steam",
-                "bio",
-                "electric",
-                "rocket",
-                "hamster",
-                "thermo",
-                "solar",
-                "wind",
-            ]
-        )
-        if valid:
+
+        validationReturned = validate.validate_data(request.form)
+        print("valid or not: ", validationReturned)
+        if validationReturned[0]:
             try:
                 with sql.connect(DATABASE_FILE) as con:
                     cur = con.cursor()
                     cur.execute(
                         "UPDATE buggies set qty_wheels=?, power_type=? WHERE id=?",
-                        (qty_wheels, power_type, DEFAULT_BUGGY_ID),
+                        ("test2", "test", DEFAULT_BUGGY_ID),
                     )
                     con.commit()
                     msg = "Record successfully saved"
             except Exception as e:
                 print(e)
                 con.rollback()
-                msg = "error in update operation"
+                msg = "Error in update operation"
             finally:
                 con.close()
         else:
-            msg = "data was not valid"
+            msg = validationReturned[1]
         return render_template("updated.html", msg=msg)
 
 
