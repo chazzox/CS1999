@@ -21,6 +21,15 @@
   <input type="submit" class="button" />
 </form>
 
+<form action="/new" method="post" autocomplete="off">
+  {% for key, value in dict(data).items() %}
+  <label for="{key}">
+    <div>Name: {{value.name}}</div>
+    <div>Description: {{value.description}}</div>
+  </label>
+  {% endfor %}
+</form>
+
 <a href="/" class="button">home</a>
 
 {% endblock %}

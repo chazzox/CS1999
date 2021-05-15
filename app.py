@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3 as sql
-import validate
+from validate import validate_data, defaults
+
 
 # Initialise websever
 app = Flask(__name__)
@@ -19,33 +20,30 @@ def home():
 @app.route("/new", methods=["POST", "GET"])
 def create_buggy():
     if request.method == "GET":
-        return render_template("buggy-form.html")
+        return render_template("buggy-form.html", data=defaults)
     elif request.method == "POST":
         # TODO: rewrite the validation method and create error message. Maybe use class?
 
         msg = ""
-        print(request.form)
 
-        validationReturned = validate.validate_data(dict(request.form))
-        print("valid or not: ", validationReturned)
-        if validationReturned[0]:
-            try:
-                with sql.connect(DATABASE_FILE) as con:
-                    cur = con.cursor()
-                    cur.execute(
-                        "UPDATE buggies set qty_wheels=?, power_type=? WHERE id=?",
-                        ("test2", "test", DEFAULT_BUGGY_ID),
-                    )
-                    con.commit()
-                    msg = "Record successfully saved"
-            except Exception as e:
-                print(e)
-                con.rollback()
-                msg = "Error in update operation"
-            finally:
-                con.close()
-        else:
-            msg = validationReturned[1]
+        # if validationReturned[0]:
+        #     try:
+        #         with sql.connect(DATABASE_FILE) as con:
+        #             cur = con.cursor()
+        #             cur.execute(
+        #                 "UPDATE buggies set qty_wheels=?, power_type=? WHERE id=?",
+        #                 ("test2", "test", DEFAULT_BUGGY_ID),
+        #             )
+        #             con.commit()
+        #             msg = "Record successfully saved"
+        #     except Exception as e:
+        #         print(e)
+        #         con.rollback()
+        #         msg = "Error in update operation"
+        #     finally:
+        #         con.close()
+        # else:
+        #     msg = validationReturned[1]
         return render_template("updated.html", msg=msg)
 
 
