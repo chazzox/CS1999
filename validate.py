@@ -1,4 +1,5 @@
 from jsonschema import validate
+from schema import Schema, And, Use, Or, Optional
 
 schema = {
     "type": "object",
@@ -87,6 +88,58 @@ schema = {
     "additionalProperties": False,
     "$id": "buggy",
 }
+
+
+power_types = Schema(
+    Or(
+        "petrol",
+        "fusion",
+        "steam",
+        "bio",
+        "electric",
+        "rocket",
+        "hamster",
+        "thermo",
+        "solar",
+        "wind",
+    )
+)
+
+schema2 = Schema(
+    [
+        {
+            "id": Use(int),
+            "qty_wheels": And(Use(int), lambda n: n >= 4),
+            "power_type": power_types,
+            "power_units": And(Use(int), lambda n: n >= 1),
+            "aux_power_type": power_types,
+            "aux_power_units": And(Use(int), lambda n: n >= 0),
+            "hamster_booster": Use(int),
+            "flag_color": str,
+            "flag_pattern": Or(
+                "plain", "vstripe", "hstripe", "dstripe", "checker", "spot"
+            ),
+            "flag_color_secondary": str,
+            "tyres": Or("knobbly", "slick", "steelband", "reactive", "maglev"),
+            "qty_tyres": And(Use(int), lambda n: n >= 4),
+            "armour": Or(
+                "none", "wood", "aluminium", "thinsteel", "thicksteel", "titanium"
+            ),
+            "attack": Or("none", "spike", "flame", "charge", "biohazard"),
+            "qty_attacks": And(Use(int), lambda n: n >= 0),
+            "fireproof": bool,
+            "insulated": bool,
+            "antibiotic": bool,
+            "banging": bool,
+            "algo": Or(
+                "defensive", "steady", "offensive", "titfortat", "random", "buggy"
+            ),
+        }
+    ]
+)
+
+test = schema2.validate([])
+print(test)
 
 
 def validate_data(data):
