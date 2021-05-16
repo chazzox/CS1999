@@ -167,6 +167,7 @@ defaults = {
         ],
         "defaults": None,
         "validation": Or(*attack_types),
+        "form": {"type": "select", "options": attack_types},
     },
     "qty_attacks": {
         "name": "Number of attacks",
