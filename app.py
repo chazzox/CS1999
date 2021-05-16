@@ -14,36 +14,18 @@ BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
 
 @app.route("/")
 def home():
-    return render_template("index.html", server_url=BUGGY_RACE_SERVER_URL)
+    return render_template("index.jinja2", server_url=BUGGY_RACE_SERVER_URL)
 
 
 @app.route("/new", methods=["POST", "GET"])
 def create_buggy():
     if request.method == "GET":
-        return render_template("buggy-form.html", data=defaults)
+        return render_template("buggy-form.jinja2", data=defaults)
     elif request.method == "POST":
 
         msg = ""
-
-        # if validationReturned[0]:
-        #     try:
-        #         with sql.connect(DATABASE_FILE) as con:
-        #             cur = con.cursor()
-        #             cur.execute(
-        #                 "UPDATE buggies set qty_wheels=?, power_type=? WHERE id=?",
-        #                 ("test2", "test", DEFAULT_BUGGY_ID),
-        #             )
-        #             con.commit()
-        #             msg = "Record successfully saved"
-        #     except Exception as e:
-        #         print(e)
-        #         con.rollback()
-        #         msg = "Error in update operation"
-        #     finally:
-        #         con.close()
-        # else:
-        #     msg = validationReturned[1]
-        return render_template("updated.html", msg=msg)
+        print(dict(request.form))
+        return render_template("updated.jinja2", msg=msg)
 
 
 @app.route("/buggy")
@@ -53,12 +35,12 @@ def show_buggies():
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies")
     record = cur.fetchone()
-    return render_template("buggy.html", buggy=record)
+    return render_template("buggy.jinja2", buggy=record)
 
 
 @app.route("/edit")
 def edit_buggy():
-    return render_template("buggy-form.html")
+    return render_template("buggy-form.jinja2")
 
 
 @app.route("/json")
@@ -76,7 +58,7 @@ def summary():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("404.html"), 404
+    return render_template("404.jinja2"), 404
 
 
 if __name__ == "__main__":

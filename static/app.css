@@ -1,87 +1,101 @@
 * {
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  color: var(--primaryText);
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
+		sans-serif;
+	color: var(--primaryText);
 }
 
 html,
 body {
-  margin: 0;
+	margin: 0;
 }
 
 :root {
-  --primaryBackground: rgb(32, 34, 37);
-  --secondaryBackground: rgb(20, 20, 26);
-  --tertiaryBackground: rgb(39, 41, 44);
-  --primaryAccentBackground: rgb(88, 94, 254);
-  --secondaryAccentBackground: rgb(52, 58, 64);
-  --tertiaryAccentBackground: rgb(46, 50, 94);
-  --primaryText: rgb(255, 255, 255);
-  --secondaryText: rgba(255, 255, 255, 0.66);
-  --tertiaryText: rgba(255, 255, 255, 0.4);
-  --buttonTextColor: rgb(255, 255, 255);
-  --borderColor: rgb(59, 59, 59);
+	--primaryBackground: rgb(32, 34, 37);
+	--secondaryBackground: rgb(20, 20, 26);
+	--tertiaryBackground: rgb(39, 41, 44);
+	--primaryAccentBackground: rgb(88, 94, 254);
+	--secondaryAccentBackground: rgb(52, 58, 64);
+	--tertiaryAccentBackground: rgb(46, 50, 94);
+	--primaryText: rgb(255, 255, 255);
+	--secondaryText: rgba(255, 255, 255, 0.66);
+	--tertiaryText: rgba(255, 255, 255, 0.4);
+	--buttonTextColor: rgb(255, 255, 255);
+	--borderColor: rgb(59, 59, 59);
 }
 
 body {
-  background: var(--primaryBackground);
+	background: var(--primaryBackground);
 }
 
 .main-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 .main-content > p {
-  padding: 5px 20px;
+	padding: 5px 20px;
 }
 
 .spacer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .button {
-  text-decoration: none;
-  background: none;
-  border: 1px solid var(--borderColor);
-  transition: background-color 0.2s;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: bold;
-  margin: 5px;
+	text-decoration: none;
+	background: none;
+	border: 1px solid var(--borderColor);
+	transition: background-color 0.2s;
+	padding: 10px;
+	border-radius: 8px;
+	font-weight: bold;
+	margin: 5px;
 }
 
 .button:hover {
-  background-color: var(--primaryAccentBackground);
+	background-color: var(--primaryAccentBackground);
 }
 
-input[type="number"] {
-  padding: 4px 8px;
-  background: var(--secondaryAccentBackground);
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: large;
-  width: 60px;
+input[type='number'] {
+	padding: 4px 8px;
+	background: var(--secondaryAccentBackground);
+	border: none;
+	border-radius: 8px;
+	font-weight: 500;
+	font-size: large;
+	width: 60px;
 }
 
-input[type="number"]:focus {
-  outline: none;
-  background-color: var(--primaryAccentBackground);
+input[type='number']:focus,
+input[type='text']:focus {
+	outline: none;
+	background-color: var(--primaryAccentBackground);
 }
 
-select {
-  padding: 8px;
-  background: var(--secondaryAccentBackground);
-  border: none;
-  border-radius: 8px;
+select,
+input[type='text'] {
+	padding: 8px;
+	background: var(--secondaryAccentBackground);
+	border: none;
+	border-radius: 8px;
 }
 
 select:focus {
-  outline: none;
+	outline: none;
+}
+
+.buggy-form {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.buggy-form > .buggy-form-data {
+	width: 300px;
+	margin: 15px;
 }

@@ -1,0 +1,41 @@
+{% extends "base.jinja2" %}{% block content %}
+
+<h1>Make buggy</h1>
+
+<form action="/new" method="post" autocomplete="off">
+	<div class="buggy-form">
+		{% for key, value in dict(data).items() %}
+		<div class="buggy-form-data">
+			<label for="{{key}}">
+				<h3>{{value.name}}</h3>
+				<p>Description: {{value.description}}</p>
+			</label>
+			{% if ("form" in value and value.form.type =='num')%}
+			<input
+				type="number"
+				name="{{key}}"
+				min="{{value.form.min}}"
+				max="{{value.form.max}}"
+				step="{{value.form.step}}"
+				value="{{value.defaults}}"
+			/>
+			{% elif ("form" in value and value.form.type=='select')%}
+			<select name="{{key}}">
+				{%for i in value.form.options%}
+				<option value="{{i}}">{{i}}</option>
+				{%endfor%}
+			</select>
+			{% elif ( "form" in value and value.form.type=='text')%}
+			<input type="text" name="{{key}}" placeholder="{{value.name}}" />
+			{% elif ( "form" in value and value.form.type=='bool')%}
+			<input type="checkbox" name="{{key}}" checked="{{value.defaults}}" />
+			{% endif%}
+		</div>
+		{% endfor %}
+	</div>
+	<input type="submit" class="button" />
+</form>
+
+<a href="/" class="button">home</a>
+
+{% endblock %}
