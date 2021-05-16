@@ -8,7 +8,9 @@
 		<div class="buggy-form-data">
 			<label for="{{key}}">
 				<h3>{{value.name}}</h3>
-				<p>Description: {{value.description}}</p>
+				{% for desc_part in value.description %}
+				<p>{{desc_part}}</p>
+				{% endfor %}
 			</label>
 			{% if ("form" in value and value.form.type =='num')%}
 			<input
