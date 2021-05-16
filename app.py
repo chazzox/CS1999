@@ -14,18 +14,18 @@ BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
 
 @app.route("/")
 def home():
-    return render_template("index.jinja2", server_url=BUGGY_RACE_SERVER_URL)
+    return render_template("index.jinja", server_url=BUGGY_RACE_SERVER_URL)
 
 
 @app.route("/new", methods=["POST", "GET"])
 def create_buggy():
     if request.method == "GET":
-        return render_template("buggy-form.jinja2", data=defaults)
+        return render_template("buggy-form.jinja", data=defaults)
     elif request.method == "POST":
 
         msg = ""
         print(dict(request.form))
-        return render_template("updated.jinja2", msg=msg)
+        return render_template("updated.jinja", msg=msg)
 
 
 @app.route("/buggy")
@@ -35,12 +35,12 @@ def show_buggies():
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies")
     record = cur.fetchone()
-    return render_template("buggy.jinja2", buggy=record)
+    return render_template("buggy.jinja", buggy=record)
 
 
 @app.route("/edit")
 def edit_buggy():
-    return render_template("buggy-form.jinja2")
+    return render_template("buggy-form.jinja")
 
 
 @app.route("/json")
@@ -58,7 +58,7 @@ def summary():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("404.jinja2"), 404
+    return render_template("404.jinja"), 404
 
 
 if __name__ == "__main__":
