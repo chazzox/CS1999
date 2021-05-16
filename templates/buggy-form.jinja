@@ -28,7 +28,7 @@
 			{% elif ( "form" in value and value.form.type=='text')%}
 			<input type="text" name="{{key}}" placeholder="{{value.name}}" />
 			{% elif ( "form" in value and value.form.type=='bool')%}
-			<input type="checkbox" name="{{key}}" checked="{{value.defaults}}" />
+			<input type="checkbox" name="{{key}}" {% if (value.defaults) %} checked="true" {% endif %} />
 			{% endif%}
 		</div>
 		{% endfor %}
