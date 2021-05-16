@@ -22,7 +22,6 @@ def create_buggy():
     if request.method == "GET":
         return render_template("buggy-form.html", data=defaults)
     elif request.method == "POST":
-        # TODO: rewrite the validation method and create error message. Maybe use class?
 
         msg = ""
 
