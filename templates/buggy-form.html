@@ -3,31 +3,31 @@
 <h1>Make buggy</h1>
 
 <form action="/new" method="post" autocomplete="off">
-  {% for key, value in dict(data).items() %}
-  <label for="{{key}}">
-    <div>Name: {{value.name}}</div>
-    <div>Description: {{value.description}}</div>
-  </label>
-  {% if ("form" in value and value.form.type =='num')%}
-  <input
-    type="number"
-    name="{{key}}"
-    min="{{value.form.min}}"
-    max="{{value.form.max}}"
-    step="{{value.form.step}}"
-    value="{{value.defaults}}"
-  />
-  {% elif ("form" in value and value.form.type=='select')%}
-  <select name="{{key}}">
-    {%for i in value.form.options%}
-    <option value="{{i}}">{{i}}</option>
-    {%endfor%}
-  </select>
-  {% elif ( "form" in value and value.form.type=='text')%}
-  <input type="text" name="{{key}}" />
-  {% elif ( "form" in value and value.form.type=='bool')%}
-  <input type="checkbox" name="{{key}}" checked="{{value.defaults}}" />
-  {% endif%} {% endfor %}
+	{% for key, value in dict(data).items() %}
+	<label for="{{key}}">
+		<div>Name: {{value.name}}</div>
+		<div>Description: {{value.description}}</div>
+	</label>
+	{% if ("form" in value and value.form.type =='num')%}
+	<input
+		type="number"
+		name="{{key}}"
+		min="{{value.form.min}}"
+		max="{{value.form.max}}"
+		step="{{value.form.step}}"
+		value="{{value.defaults}}"
+	/>
+	{% elif ("form" in value and value.form.type=='select')%}
+	<select name="{{key}}">
+		{%for i in value.form.options%}
+		<option value="{{i}}">{{i}}</option>
+		{%endfor%}
+	</select>
+	{% elif ( "form" in value and value.form.type=='text')%}
+	<input type="text" name="{{key}}" />
+	{% elif ( "form" in value and value.form.type=='bool')%}
+	<input type="checkbox" name="{{key}}" checked="{{value.defaults}}" />
+	{% endif%} {% endfor %}
 </form>
 
 <a href="/" class="button">home</a>
