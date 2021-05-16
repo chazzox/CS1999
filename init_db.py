@@ -18,7 +18,6 @@ connection.execute(
 )
 
 print('- Table "buggies" exists OK')
-
 cursor = connection.cursor()
 
 cursor.execute("SELECT * FROM buggies LIMIT 1")
