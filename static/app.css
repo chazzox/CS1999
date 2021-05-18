@@ -54,6 +54,7 @@ body {
 	border-radius: 8px;
 	font-weight: bold;
 	margin: 5px;
+	font-size: 15px;
 }
 
 .button:hover {
@@ -103,7 +104,7 @@ select:focus {
 .buggy-form > .buggy-form-data {
 	width: 350px;
 	margin: 15px;
-	background-color: var(--tertiaryBackground);
+	background-color: var(--secondaryAccentBackground);
 	padding: 8px;
 	border-radius: 8px;
 }

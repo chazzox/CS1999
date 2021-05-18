@@ -1,7 +1,10 @@
 {% extends "base.jinja" %}{% block content %}
 
 <h1>Make buggy</h1>
-
+<h3>
+	This is the buggy form, scroll through and select the values you want for the buggy. If anything is invalid we'll let you
+	know once you try and submit
+</h3>
 <form action="/new" method="post" autocomplete="off">
 	<div class="buggy-form">
 		{% for key, value in dict(data).items() %}
