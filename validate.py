@@ -22,13 +22,13 @@ power_types = [
     "wind",
 ]
 
-flag_patterns = ["plain", "vstripe", "hstripe", "dstripe", "checker", "spot", None]
+flag_patterns = ["plain", "vstripe", "hstripe", "dstripe", "checker", "spot", "None"]
 
 tyre_types = ["knobbly", "slick", "steelband", "reactive", "maglev"]
 
-armour_types = [None, "wood", "aluminium", "thinsteel", "thicksteel", "titanium"]
+armour_types = ["None", "wood", "aluminium", "thinsteel", "thicksteel", "titanium"]
 
-attack_types = [None, "spike", "flame", "charge", "biohazard"]
+attack_types = ["None", "spike", "flame", "charge", "biohazard"]
 
 algo_types = ["steady", "defensive", "offensive", "titfortat", "random", "buggy"]
 
@@ -74,9 +74,9 @@ defaults = {
             "You don't need a backup. Nobody needs a backup. Until they do.",
             "See power table for details.",
         ],
-        "defaults": None,
-        "validation": Or(None, *power_types),
-        "form": {"type": "select", "options": [None, *power_types]},
+        "defaults": "None",
+        "validation": Or("None", *power_types),
+        "form": {"type": "select", "options": ["None", *power_types]},
     },
     "aux_power_units": {
         "name": "Auxiliary motive power units",
@@ -154,7 +154,7 @@ defaults = {
             "The predominant protection carried by the buggy. A triple-trade-off between safety, encumbrance, and cost.",
             "Only needed if other buggies come equipped for hostilities. Surely nobody brings weapons to a race, right?",
         ],
-        "defaults": None,
+        "defaults": "None",
         "validation": Or(*armour_types),
         "form": {"type": "select", "options": armour_types},
     },
@@ -165,7 +165,7 @@ defaults = {
             "Options are classic spikes, flame throwers, electric lances, or infectious spores.",
             "All except spikes carry a risk of karmic self-injury.",
         ],
-        "defaults": None,
+        "defaults": "None",
         "validation": Or(*attack_types),
         "form": {"type": "select", "options": attack_types},
     },
@@ -183,7 +183,7 @@ defaults = {
         "name": "Fireproof?",
         "description": ["Is the buggy coated with fire-retardant paint?"],
         "defaults": False,
-        "validation": bool,
+        "validation": Use(bool),
         "form": {"type": "bool"},
     },
     "insulated": {
@@ -192,7 +192,7 @@ defaults = {
             "Is the buggy protected with a rubber mesh protecting itself from electric lance attacks?"
         ],
         "defaults": False,
-        "validation": bool,
+        "validation": Use(bool),
         "form": {"type": "bool"},
     },
     "antibiotic": {
@@ -201,7 +201,7 @@ defaults = {
             "Is the buggy equipped with with the latest defences against virulent biohazards and nasty scratches?"
         ],
         "defaults": False,
-        "validation": bool,
+        "validation": Use(bool),
         "form": {"type": "bool"},
     },
     "banging": {
@@ -210,7 +210,7 @@ defaults = {
             "Is the buggy wired up with some decent lungs for blasting motivational rock during the more demanding sections of the race?"
         ],
         "defaults": False,
-        "validation": bool,
+        "validation": Use(bool),
         "form": {"type": "bool"},
     },
     "algo": {

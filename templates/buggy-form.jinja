@@ -32,8 +32,10 @@
 			</select>
 			{% elif ( "form" in value and value.form.type=='text')%}
 			<input type="text" name="{{key}}" placeholder="{{value.name}}" />
-			{% elif ( "form" in value and value.form.type=='bool')%}
-			<input type="checkbox" name="{{key}}" {% if (value.defaults) %} checked="true" {% endif %} />
+			{% elif ( "form" in value and value.form.type=='bool')%} {# Because The form will not the checkbox state if it is
+			not on we need to use the hidden value to fallback on #}
+			<input type="hidden" name="{{key}}" value="" />
+			<input type="checkbox" name="{{key}}" {% if (value.defaults) %} checked {% endif %} value="True" />
 			{% endif%}
 		</div>
 		{% endfor %}

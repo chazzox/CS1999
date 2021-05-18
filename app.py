@@ -12,6 +12,10 @@ DEFAULT_BUGGY_ID = "1"
 BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
 
 
+# create a dict using key:validation from the defaults dict
+validation_dict = dict(map(lambda a: [a[0], a[1]["validation"]], defaults.items()))
+
+
 @app.route("/")
 def home():
     return render_template("index.jinja", server_url=BUGGY_RACE_SERVER_URL)
@@ -22,9 +26,10 @@ def create_buggy():
     if request.method == "GET":
         return render_template("buggy-form.jinja", data=defaults)
     elif request.method == "POST":
-
-        msg = ""
-        print(dict(request.form))
+        isValid, msg = validate_data(dict(request.form), validation_dict)
+        if isValid:
+            print("updating db with new values")
+        # update code
         return render_template("updated.jinja", msg=msg)
 
 
