@@ -93,9 +93,13 @@ select:focus {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
+	margin-bottom: 50px;
 }
 
 .buggy-form > .buggy-form-data {
-	width: 300px;
+	width: 350px;
 	margin: 15px;
+	background-color: var(--tertiaryBackground);
+	padding: 8px;
+	border-radius: 8px;
 }

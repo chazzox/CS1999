@@ -8,7 +8,9 @@
 		<div class="buggy-form-data">
 			<label for="{{key}}">
 				<h3>{{value.name}}</h3>
-				<p>Description: {{value.description}}</p>
+				{% for desc_part in value.description %}
+				<p>{{desc_part}}</p>
+				{% endfor %}
 			</label>
 			{% if ("form" in value and value.form.type =='num')%}
 			<input
@@ -28,7 +30,7 @@
 			{% elif ( "form" in value and value.form.type=='text')%}
 			<input type="text" name="{{key}}" placeholder="{{value.name}}" />
 			{% elif ( "form" in value and value.form.type=='bool')%}
-			<input type="checkbox" name="{{key}}" checked="{{value.defaults}}" />
+			<input type="checkbox" name="{{key}}" {% if (value.defaults) %} checked="true" {% endif %} />
 			{% endif%}
 		</div>
 		{% endfor %}
