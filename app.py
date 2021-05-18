@@ -26,6 +26,7 @@ def create_buggy():
     if request.method == "GET":
         return render_template("buggy-form.jinja", data=defaults)
     elif request.method == "POST":
+        # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(dict(request.form), validation_dict)
         if isValid:
             print("updating db with new values")
