@@ -29,7 +29,23 @@ def create_buggy():
         # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(dict(request.form), validation_dict)
         if isValid:
-            print("updating db with new values")
+            try:
+                with sql.connect(DATABASE_FILE) as con:
+                    cur = con.cursor()
+                    update_values = ", ".join(map(lambda a: a + "=?", defaults.keys()))
+                    print(f"UPDATE buggies set {update_values} WHERE id=?")
+                    cur.execute(
+                        f"UPDATE buggies set {update_values} WHERE id=?",
+                        (*msg.values(), DEFAULT_BUGGY_ID),
+                    )
+                    con.commit()
+                    msg = "Record successfully saved"
+            except Exception as e:
+                print(e)
+                con.rollback()
+                msg = "Error in update operation"
+            finally:
+                con.close()
         # update code
         return render_template("updated.jinja", msg=msg)
 

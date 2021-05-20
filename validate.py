@@ -9,6 +9,15 @@ def validate_data(data, schema):
     return (True, validated)
 
 
+def database_friendly(value):
+    if isinstance(value, bool):
+        return int(value)
+    elif isinstance(value, str):
+        return f"'{value}'"
+    else:
+        return value
+
+
 power_types = [
     "petrol",
     "fusion",
