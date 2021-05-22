@@ -104,7 +104,7 @@ select:focus {
 .buggy-form > .buggy-form-data {
 	width: 350px;
 	margin: 15px;
-	background-color: var(--secondaryAccentBackground);
+	background-color: var(--secondaryBackground);
 	padding: 8px;
 	border-radius: 8px;
 }
