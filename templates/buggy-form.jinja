@@ -15,7 +15,7 @@
 				<p>{{desc_part}}</p>
 				{% endfor %}
 			</label>
-			{% if ("form" in value and value.form.type =='num')%}
+			{% if value.form.type =='num'%}
 			<input
 				type="number"
 				name="{{key}}"
@@ -24,18 +24,20 @@
 				step="{{value.form.step}}"
 				value="{{value.defaults}}"
 			/>
-			{% elif ("form" in value and value.form.type=='select')%}
+			{% elif value.form.type=='select'%}
 			<select name="{{key}}">
 				{%for i in value.form.options%}
 				<option value="{{i}}">{{i}}</option>
 				{%endfor%}
 			</select>
-			{% elif ( "form" in value and value.form.type=='text')%}
+			{% elif value.form.type=='text' %}
 			<input type="text" name="{{key}}" placeholder="{{value.name}}" />
-			{% elif ( "form" in value and value.form.type=='bool')%} {# Because The form will not the checkbox state if it is
-			not on we need to use the hidden value to fallback on #}
+			{% elif value.form.type=='bool'%} {# Because The form will not the checkbox state if it is not on we need to use
+			the hidden value to fallback on #}
 			<input type="hidden" name="{{key}}" value="" />
 			<input type="checkbox" name="{{key}}" {% if (value.defaults) %} checked {% endif %} value="True" />
+			{% elif value.form.type=='color'%}
+			<input type="color" name="{{key}}" value="{{value.defaults}}" />
 			{% endif%}
 		</div>
 		{% endfor %}
