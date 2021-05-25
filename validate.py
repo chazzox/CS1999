@@ -235,6 +235,13 @@ defaults = {
     },
 }
 
+
+def calc_price(data):
+    cost = 0
+    print(data)
+    return cost
+
+
 colors = [
     "black",
     "silver",

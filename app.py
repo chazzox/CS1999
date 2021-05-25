@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3 as sql
-from validate import validate_data, defaults
+from validate import validate_data, defaults, calc_price
 
 
 # Initialise websever
@@ -32,10 +32,12 @@ def create_buggy():
             try:
                 with sql.connect(DATABASE_FILE) as con:
                     cur = con.cursor()
-                    update_values = ", ".join(map(lambda a: a + "=?", defaults.keys()))
+                    update_values = ", ".join(
+                        map(lambda a: a + "=?", [*defaults.keys(), "total_cost"])
+                    )
                     cur.execute(
                         f"UPDATE buggies set {update_values} WHERE id=?",
-                        (*msg.values(), DEFAULT_BUGGY_ID),
+                        (*msg.values(), calc_price(msg), DEFAULT_BUGGY_ID),
                     )
                     con.commit()
                     msg = "Record successfully saved"

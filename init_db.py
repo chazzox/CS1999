@@ -5,7 +5,7 @@ from validate import defaults, database_friendly
 connection = sqlite3.connect(DATABASE_FILE)
 print('- Opened database successfully in file "{}"'.format(DATABASE_FILE))
 
-# using Python's triple-quote for multi-line strings:
+
 connection.execute(
     """CREATE TABLE IF NOT EXISTS buggies (
     id                      INTEGER PRIMARY KEY,
@@ -27,7 +27,8 @@ connection.execute(
     insulated               INTEGER DEFAULT 0,
     antibiotic              INTEGER DEFAULT 0,
     banging                 INTEGER DEFAULT 0, 
-    algo                    VARCHAR(20)
+    algo                    VARCHAR(20),
+    total_cost              INTEGER DEFAULT 0
 )"""
 )
 
