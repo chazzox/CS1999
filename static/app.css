@@ -89,7 +89,8 @@ select {
 	-webkit-appearance: none;
 }
 
-select:focus {
+select:focus,
+input[type='color'] {
 	outline: none;
 }
 
@@ -107,4 +108,11 @@ select:focus {
 	background-color: var(--secondaryBackground);
 	padding: 8px;
 	border-radius: 8px;
+}
+
+input[type='color'] {
+	background-color: var(--secondaryBackground);
+	border: none;
+	width: 50px;
+	height: 50px;
 }
