@@ -33,7 +33,6 @@ def create_buggy():
                 with sql.connect(DATABASE_FILE) as con:
                     cur = con.cursor()
                     update_values = ", ".join(map(lambda a: a + "=?", defaults.keys()))
-                    print(f"UPDATE buggies set {update_values} WHERE id=?")
                     cur.execute(
                         f"UPDATE buggies set {update_values} WHERE id=?",
                         (*msg.values(), DEFAULT_BUGGY_ID),
@@ -41,7 +40,6 @@ def create_buggy():
                     con.commit()
                     msg = "Record successfully saved"
             except Exception as e:
-                print(e)
                 con.rollback()
                 msg = "Error in update operation"
             finally:
@@ -62,7 +60,15 @@ def show_buggies():
 
 @app.route("/edit")
 def edit_buggy():
-    return render_template("buggy-form.jinja")
+    con = sql.connect(DATABASE_FILE)
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM buggies")
+    record = dict(cur.fetchone())
+    new_defaults = dict(defaults.copy())
+    for i in new_defaults:
+        new_defaults[i]["defaults"] = record[i]
+    return render_template("buggy-form.jinja", data=new_defaults)
 
 
 @app.route("/json")
