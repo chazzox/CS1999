@@ -139,3 +139,5 @@ dmypy.json
 
 # vim swap files
 *.swp
+
+.vscode/
