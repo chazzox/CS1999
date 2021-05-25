@@ -9,7 +9,7 @@ app = Flask(__name__)
 # CONTANTS
 DATABASE_FILE = "database.db"
 DEFAULT_BUGGY_ID = "1"
-BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
+BUGGY_RACE_SERVER_URL = "https://rhul.buggyrace.net"
 
 
 # create a dict using key:validation from the defaults dict
