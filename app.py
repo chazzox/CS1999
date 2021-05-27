@@ -11,7 +11,6 @@ DATABASE_FILE = "database.db"
 DEFAULT_BUGGY_ID = "1"
 BUGGY_RACE_SERVER_URL = "https://rhul.buggyrace.net"
 
-
 # create a dict using key:validation from the defaults dict
 validation_dict = dict(map(lambda a: [a[0], a[1]["validation"]], defaults.items()))
 
@@ -28,6 +27,7 @@ def create_buggy():
     elif request.method == "POST":
         # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(dict(request.form), validation_dict)
+        # update code
         if isValid:
             try:
                 with sql.connect(DATABASE_FILE) as con:
@@ -46,7 +46,6 @@ def create_buggy():
                 msg = "Error in update operation"
             finally:
                 con.close()
-        # update code
         return render_template("updated.jinja", msg=msg)
 
 
@@ -74,16 +73,13 @@ def edit_buggy():
 
 
 @app.route("/json")
-def summary():
+def json():
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
-
-    buggies = dict(
-        zip([column[0] for column in cur.description], cur.fetchone())
-    ).items()
-    return jsonify(dict(buggies))
+    buggies = dict(zip([column[0] for column in cur.description], cur.fetchone()))
+    return jsonify(buggies)
 
 
 @app.errorhandler(404)
