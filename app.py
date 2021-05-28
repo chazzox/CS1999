@@ -27,6 +27,7 @@ def create_buggy():
     elif request.method == "POST":
         # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(dict(request.form), validation_dict)
+        # TODO: still *some* validation steps not implemented, do em
         # update code
         if isValid:
             try:

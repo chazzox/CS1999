@@ -407,7 +407,7 @@ def calc_price(data):
     cost += armour_dict[data['armour']]*(0.1*data['qty_tyres'])
     # attack
     cost += data['qty_attacks']*attack_dict[data['attack']]
-    # booleans
+    # everything else
     for i in defaults.keys():
         cost += defaults[i]["cost"] if data[i] else 0
     # others

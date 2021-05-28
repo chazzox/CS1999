@@ -22,6 +22,7 @@ body {
 	--tertiaryText: rgba(255, 255, 255, 0.4);
 	--buttonTextColor: rgb(255, 255, 255);
 	--borderColor: rgb(59, 59, 59);
+	--warningColor: #dc3454;
 }
 
 body {
@@ -115,4 +116,10 @@ input[type='color'] {
 	border: none;
 	width: 50px;
 	height: 50px;
+}
+
+.warning {
+	background-color: var(--warningColor);
+	padding: 10px;
+	border-radius: 30px;
 }
