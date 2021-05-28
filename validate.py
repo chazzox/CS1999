@@ -170,26 +170,16 @@ def database_friendly(value):
         return value
 
 
-power_types = [
-    "petrol",
-    "fusion",
-    "steam",
-    "bio",
-    "electric",
-    "rocket",
-    "hamster",
-    "thermo",
-    "solar",
-    "wind",
-]
+ 
+power_dict = {"petrol":4,"fusion":400,"steam":3,"bio":5,"electric":20,"rocket":16,"hamster":3,"thermo":300,"solar":40,"wind":20}
 
 flag_patterns = ["plain", "vstripe", "hstripe", "dstripe", "checker", "spot", "None"]
 
-tyre_types = ["knobbly", "slick", "steelband", "reactive", "maglev"]
+tyre_dict = {"knobbly":15, "slick":10, "steelband":20, "reactive":40, "maglev":50}
 
-armour_types = ["None", "wood", "aluminium", "thinsteel", "thicksteel", "titanium"]
+armour_dict = {"None":0, "wood":40, "aluminium":200, "thinsteel":100, "thicksteel":200, "titanium":200}
 
-attack_types = ["None", "spike", "flame", "charge", "biohazard"]
+attack_dict = {"None":0, "spike":5, "flame":20, "charge":28, "biohazard":30}
 
 algo_types = ["steady", "defensive", "offensive", "titfortat", "random", "buggy"]
 
@@ -206,6 +196,7 @@ defaults = {
         "defaults": "4",
         "validation": And(Use(int), lambda n: n >= 4),
         "form": {"type": "num", "min": "4", "max": "", "step": 2},
+        'cost':0
     },
     "power_type": {
         "name": "Primary motive power",
@@ -214,8 +205,9 @@ defaults = {
             "See power table for details.",
         ],
         "defaults": "petrol",
-        "validation": Or(*power_types),
-        "form": {"type": "select", "options": power_types},
+        "validation": Or(*power_dict.keys()),
+        "form": {"type": "select", "options": power_dict.keys()},
+        'cost':0
     },
     "power_units": {
         "name": "Primary motive power units",
@@ -227,6 +219,7 @@ defaults = {
         "defaults": "1",
         "validation": And(Use(int), lambda n: n >= 1),
         "form": {"type": "num", "min": "1", "max": "", "step": ""},
+        'cost':0
     },
     "aux_power_type": {
         "name": "Auxiliary motive power",
@@ -236,8 +229,9 @@ defaults = {
             "See power table for details.",
         ],
         "defaults": "None",
-        "validation": Or("None", *power_types),
-        "form": {"type": "select", "options": ["None", *power_types]},
+        "validation": Or("None",*power_dict.keys()),
+        "form": {"type": "select", "options": ["None", *power_dict.keys()]},
+        'cost':0
     },
     "aux_power_units": {
         "name": "Auxiliary motive power units",
@@ -248,6 +242,7 @@ defaults = {
         "defaults": "0",
         "validation": And(Use(int), lambda n: n >= 0),
         "form": {"type": "num", "min": "0", "max": "", "step": ""},
+        'cost':0
     },
     "hamster_booster": {
         "name": "Hamster booster",
@@ -260,6 +255,7 @@ defaults = {
         "defaults": "0",
         "validation": And(Use(int), lambda n: n >= 0),
         "form": {"type": "num", "min": "0", "max": "", "step": ""},
+        'cost':0
     },
     "flag_color": {
         "name": "Flag's colour",
@@ -269,6 +265,7 @@ defaults = {
         "defaults": "white",
         "validation": Or(Regex("^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"), *colors),
         "form": {"type": "color"},
+        'cost':0
     },
     "flag_pattern": {
         "name": "Flag's pattern",
@@ -278,6 +275,7 @@ defaults = {
         "defaults": "plain",
         "validation": Or(*flag_patterns),
         "form": {"type": "select", "options": flag_patterns},
+        'cost':0
     },
     "flag_color_secondary": {
         "name": "Flag's other colour",
@@ -288,6 +286,7 @@ defaults = {
         "defaults": "black",
         "validation": Or(Regex("^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"), *colors),
         "form": {"type": "color"},
+        'cost':0
     },
     "tyres": {
         "name": "Type of tyres",
@@ -296,8 +295,9 @@ defaults = {
             "You can only carry one type of tyre (that is, for all your tyres) in any race.",
         ],
         "defaults": "knobbly",
-        "validation": Or(*tyre_types),
-        "form": {"type": "select", "options": tyre_types},
+        "validation": Or(*tyre_dict.keys()),
+        "form": {"type": "select", "options": tyre_dict.keys()},
+        'cost':0
     },
     "qty_tyres": {
         "name": "Number of tyres",
@@ -308,6 +308,7 @@ defaults = {
         "defaults": 4,
         "validation": And(Use(int), lambda n: n >= 4),
         "form": {"type": "num", "min": "4", "max": "", "step": ""},
+        'cost':0
     },
     "armour": {
         "name": "Armour",
@@ -316,8 +317,9 @@ defaults = {
             "Only needed if other buggies come equipped for hostilities. Surely nobody brings weapons to a race, right?",
         ],
         "defaults": "None",
-        "validation": Or(*armour_types),
-        "form": {"type": "select", "options": armour_types},
+        "validation": Or(*armour_dict.keys()),
+        "form": {"type": "select", "options": armour_dict.keys()},
+        'cost':0
     },
     "attack": {
         "name": "Offensive capability",
@@ -327,8 +329,9 @@ defaults = {
             "All except spikes carry a risk of karmic self-injury.",
         ],
         "defaults": "None",
-        "validation": Or(*attack_types),
-        "form": {"type": "select", "options": attack_types},
+        "validation": Or(*attack_dict.keys()),
+        "form": {"type": "select", "options": attack_dict.keys()},
+        'cost':0
     },
     "qty_attacks": {
         "name": "Number of attacks",
@@ -339,13 +342,15 @@ defaults = {
         "defaults": 0,
         "validation": And(Use(int), lambda n: n >= 0),
         "form": {"type": "num", "min": "0", "max": "", "step": ""},
+        'cost':0
     },
     "fireproof": {
         "name": "Fireproof?",
         "description": ["Is the buggy coated with fire-retardant paint?"],
         "defaults": False,
-        "validation": Use(bool),
+        "validation": Use(lambda a : bool(int(a))),
         "form": {"type": "bool"},
+        "cost":70
     },
     "insulated": {
         "name": "Insulated?",
@@ -353,8 +358,9 @@ defaults = {
             "Is the buggy protected with a rubber mesh protecting itself from electric lance attacks?"
         ],
         "defaults": False,
-        "validation": Use(bool),
+        "validation": Use(lambda a : bool(int(a))),
         "form": {"type": "bool"},
+        "cost":100
     },
     "antibiotic": {
         "name": "Antibiotic?",
@@ -362,8 +368,9 @@ defaults = {
             "Is the buggy equipped with with the latest defences against virulent biohazards and nasty scratches?"
         ],
         "defaults": False,
-        "validation": Use(bool),
+        "validation": Use(lambda a : bool(int(a))),
         "form": {"type": "bool"},
+        "cost":90
     },
     "banging": {
         "name": "Banging sound system?",
@@ -371,8 +378,9 @@ defaults = {
             "Is the buggy wired up with some decent lungs for blasting motivational rock during the more demanding sections of the race?"
         ],
         "defaults": False,
-        "validation": Use(bool),
+        "validation": Use(lambda a : bool(int(a))),
         "form": {"type": "bool"},
+        "cost":42
     },
     "algo": {
         "name": "Race computer algorithm",
@@ -384,10 +392,23 @@ defaults = {
         "defaults": "steady",
         "validation": Or(*algo_types),
         "form": {"type": "select", "options": algo_types},
+        'cost':0
     },
 }
 
-
 def calc_price(data):
     cost = 0
+    # power
+    cost += power_dict[data['power_type']]
+    cost += power_dict[data['aux_power_type']] if data['aux_power_type'] in power_dict else 0
+    # tyre
+    cost += data['qty_tyres']*tyre_dict[data['tyres']]
+    # armour
+    cost += armour_dict[data['armour']]*(0.1*data['qty_tyres'])
+    # attack
+    cost += data['qty_attacks']*attack_dict[data['attack']]
+    # booleans
+    for i in defaults.keys():
+        cost += defaults[i]["cost"] if data[i] else 0
+    # others
     return cost

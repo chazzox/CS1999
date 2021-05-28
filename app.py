@@ -43,6 +43,7 @@ def create_buggy():
                     msg = "Record successfully saved"
             except Exception as e:
                 con.rollback()  # type: ignore
+                print(e)
                 msg = "Error in update operation"
             finally:
                 con.close()
