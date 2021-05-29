@@ -35,7 +35,7 @@ connection.execute(
 
 keys = ", ".join(defaults.keys())
 values = ", ".join(
-    map(lambda a: str(database_friendly(a[1]["defaults"])), defaults.items())
+    map(lambda a: str(database_friendly(a["defaults"])), defaults.values())
 )
 
 

@@ -135,10 +135,20 @@ table td {
 	border: 1px solid white;
 }
 
-div#buggyContainer {
+#buggyContainer {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
 	width: 100%;
 	margin: 25px;
+}
+
+#buggyContainer input[type='submit'] {
+	background: none;
+	border: none;
+	font-size: 16px;
+	text-decoration: underline;
+}
+h1 {
+	margin: 10;
 }
