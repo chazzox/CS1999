@@ -123,3 +123,14 @@ input[type='color'] {
 	padding: 10px;
 	border-radius: 30px;
 }
+
+table {
+	background-color: var(--secondaryBackground);
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+table td {
+	padding: 6px;
+	border: 1px solid white;
+}

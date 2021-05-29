@@ -61,17 +61,23 @@ def show_buggies():
     return render_template("buggy.jinja", buggy=record)
 
 
-@app.route("/edit")
-def edit_buggy():
+@app.route("/edit/<buggy_id>")
+def edit_buggy(buggy_id):
+    print(buggy_id)
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
-    cur.execute("SELECT * FROM buggies")
-    record = dict(cur.fetchone())
-    new_defaults = dict(defaults.copy())
-    for i in new_defaults:
-        new_defaults[i]["defaults"] = record[i]
-    return render_template("buggy-form.jinja", data=new_defaults)
+    cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
+    buggy_db = cur.fetchone()
+    if buggy_db:
+        record = dict(buggy_db)
+        new_defaults = dict(defaults.copy())
+        for i in new_defaults:
+            new_defaults[i]["defaults"] = record[i]
+        return render_template("buggy-form.jinja", data=new_defaults)
+    else:
+        # if the buggy with that id is not in the database, render the 404 site
+        return render_template("404.jinja"), 404
 
 
 @app.route("/json")
