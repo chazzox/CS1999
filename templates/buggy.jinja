@@ -2,7 +2,7 @@
 
 <h1>Buggy</h1>
 <div id="buggyContainer">
-	{% for buggy in buggies%}
+	{%if buggies|length > 0 %} {% for buggy in buggies%}
 	<table>
 		{% for key, value in dict(buggy).items() %}
 		<tr>
@@ -21,7 +21,9 @@
 			</td>
 		</tr>
 	</table>
-	{% endfor %}
+	{% endfor %} {%else%}
+	<a href="/new">No buggies found in the database, please create some first</a>
+	{%endif %}
 </div>
 <a href="/" class="button">home</a>
 
