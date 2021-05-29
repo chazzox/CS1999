@@ -1,6 +1,7 @@
+from typing import KeysView
 from flask import Flask, render_template, request, jsonify
 import sqlite3 as sql
-from validate import validate_data, defaults, calc_price
+from validate import database_friendly, validate_data, defaults, calc_price
 
 
 # Initialise websever
@@ -33,13 +34,14 @@ def create_buggy():
             try:
                 with sql.connect(DATABASE_FILE) as con:
                     cur = con.cursor()
-                    update_values = ", ".join(
-                        map(lambda a: a + "=?", [*defaults.keys(), "total_cost"])
+                    keys = ", ".join([*defaults.keys(), "total_cost"])
+                    values = ", ".join(
+                        map(
+                            lambda a: str(database_friendly(a)),
+                            [*msg.values(), calc_price(msg)],
+                        )
                     )
-                    cur.execute(
-                        f"UPDATE buggies set {update_values} WHERE id=?",
-                        (*msg.values(), calc_price(msg), DEFAULT_BUGGY_ID),
-                    )
+                    cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")
                     con.commit()
                     msg = "Record successfully saved"
             except Exception as e:
@@ -57,8 +59,9 @@ def show_buggies():
     con.row_factory = sql.Row
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies")
-    record = cur.fetchone()
-    return render_template("buggy.jinja", buggy=record)
+    buggies = cur.fetchall()
+    print(list(buggies))
+    return render_template("buggy.jinja", buggies=buggies)
 
 
 @app.route("/edit/<buggy_id>")

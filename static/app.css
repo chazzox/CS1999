@@ -134,3 +134,10 @@ table td {
 	padding: 6px;
 	border: 1px solid white;
 }
+
+div#buggyContainer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	width: 100%;
+}

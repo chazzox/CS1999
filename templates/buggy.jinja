@@ -1,18 +1,21 @@
 {% extends "base.jinja" %} {% block content %}
 
 <h1>Buggy</h1>
-
-<table>
-	{% for key, value in dict(buggy).items() %}
-	<tr>
-		<td>{{key}}:</td>
-		<td>{{value}}</td>
-	</tr>
+<div id="buggyContainer">
+	{% for buggy in buggies%}
+	<table>
+		{% for key, value in dict(buggy).items() %}
+		<tr>
+			<td>{{key}}:</td>
+			<td>{{value}}</td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="2"><a href="/edit/{{buggy['id']}}">Edit this buggy</a></td>
+		</tr>
+	</table>
 	{% endfor %}
-	<tr>
-		<td colspan="2"><a href="/edit/{{buggy['id']}}">Edit this buggy</a></td>
-	</tr>
-</table>
+</div>
 <a href="/" class="button">home</a>
 
 {% endblock %}
