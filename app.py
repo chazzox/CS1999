@@ -98,8 +98,8 @@ def json():
     con.row_factory = sql.Row
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
-    buggies = dict(zip([column[0] for column in cur.description], cur.fetchone()))
-    return jsonify(buggies)
+    record = cur.fetchone()
+    return jsonify(dict(record or {}))
 
 
 @app.errorhandler(404)
