@@ -1,5 +1,4 @@
-from typing import KeysView
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 import sqlite3 as sql
 from validate import database_friendly, validate_data, defaults, calc_price
 
@@ -63,11 +62,14 @@ def show_buggies():
     return render_template("buggy.jinja", buggies=buggies)
 
 
-@app.route("/delete/<buggy_id>")
+@app.route("/delete/<buggy_id>", methods=["POST", "GET"])
 def del_buggy(buggy_id):
-    if request.method == "DELETE":
+    if request.method == "POST":
         print(buggy_id)
-        return show_buggies()
+        con = sql.connect(DATABASE_FILE)
+        con.execute("DELETE FROM buggies WHERE id=?", (buggy_id,))
+        con.commit()
+        return redirect("/buggies")
     elif request.method == "GET":
         return page_not_found(404)
 
