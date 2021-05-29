@@ -53,20 +53,27 @@ def create_buggy():
         return render_template("updated.jinja", msg=msg)
 
 
-@app.route("/buggy")
+@app.route("/buggies")
 def show_buggies():
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies")
     buggies = cur.fetchall()
-    print(list(buggies))
     return render_template("buggy.jinja", buggies=buggies)
+
+
+@app.route("/delete/<buggy_id>")
+def del_buggy(buggy_id):
+    if request.method == "DELETE":
+        print(buggy_id)
+        return show_buggies()
+    elif request.method == "GET":
+        return page_not_found(404)
 
 
 @app.route("/edit/<buggy_id>")
 def edit_buggy(buggy_id):
-    print(buggy_id)
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
@@ -80,7 +87,7 @@ def edit_buggy(buggy_id):
         return render_template("buggy-form.jinja", data=new_defaults)
     else:
         # if the buggy with that id is not in the database, render the 404 site
-        return render_template("404.jinja"), 404
+        return page_not_found(404)
 
 
 @app.route("/json")

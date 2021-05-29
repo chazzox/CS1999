@@ -13,6 +13,13 @@
 		<tr>
 			<td colspan="2"><a href="/edit/{{buggy['id']}}">Edit this buggy</a></td>
 		</tr>
+		<tr>
+			<td colspan="2">
+				<form action="/delete/{{buggy['id']}}" method="DELETE">
+					<input type="submit" value="delete this buggy" class="button" />
+				</form>
+			</td>
+		</tr>
 	</table>
 	{% endfor %}
 </div>

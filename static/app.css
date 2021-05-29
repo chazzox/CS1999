@@ -140,4 +140,5 @@ div#buggyContainer {
 	flex-wrap: wrap;
 	justify-content: space-around;
 	width: 100%;
+	margin: 25px;
 }
