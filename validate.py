@@ -152,24 +152,6 @@ colors = [
     "yellowgreen",
 ]
 
-
-def validate_data(data, schema):
-    try:
-        validated = Schema(schema).validate(data)
-    except Exception as error_msg:
-        return (False, error_msg)
-    return (True, validated)
-
-
-def database_friendly(value):
-    if isinstance(value, bool):
-        return int(value)
-    elif isinstance(value, str):
-        return f"'{value}'"
-    else:
-        return value
-
-
 power_dict = {
     "petrol": 4,
     "fusion": 400,
@@ -183,7 +165,7 @@ power_dict = {
     "wind": 20,
 }
 
-flag_patterns = ["plain", "vstripe", "hstripe", "dstripe", "checker", "spot", "None"]
+flag_patterns = ["plain", "vstripe", "hstripe", "dstripe", "checker", "spot"]
 
 tyre_dict = {"knobbly": 15, "slick": 10, "steelband": 20, "reactive": 40, "maglev": 50}
 
@@ -434,3 +416,20 @@ def calc_price(data):
         cost += defaults[i]["cost"] if data[i] else 0
     # others
     return cost
+
+
+def validate_data(data, schema):
+    try:
+        validated = Schema(schema).validate(data)
+    except Exception as error_msg:
+        return (False, error_msg)
+    return (True, validated)
+
+
+def database_friendly(value):
+    if isinstance(value, bool):
+        return int(value)
+    elif isinstance(value, str):
+        return f"'{value}'"
+    else:
+        return value
