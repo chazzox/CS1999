@@ -23,7 +23,7 @@ def home():
 @app.route("/new", methods=["POST", "GET"])
 def create_buggy():
     if request.method == "GET":
-        return render_template("buggy-form.jinja", data=defaults)
+        return render_template("buggy-form.jinja", data=defaults, url="/new")
     elif request.method == "POST":
         # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(dict(request.form), validation_dict)
@@ -65,7 +65,6 @@ def show_buggies():
 @app.route("/delete/<buggy_id>", methods=["POST", "GET"])
 def del_buggy(buggy_id):
     if request.method == "POST":
-        print(buggy_id)
         con = sql.connect(DATABASE_FILE)
         con.execute("DELETE FROM buggies WHERE id=?", (buggy_id,))
         con.commit()
@@ -74,22 +73,51 @@ def del_buggy(buggy_id):
         return page_not_found(404)
 
 
-@app.route("/edit/<buggy_id>")
+@app.route("/edit/<buggy_id>", methods=["POST", "GET"])
 def edit_buggy(buggy_id):
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
-    cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
-    buggy_db = cur.fetchone()
-    if buggy_db:
-        record = dict(buggy_db)
-        new_defaults = dict(defaults.copy())
-        for i in new_defaults:
-            new_defaults[i]["defaults"] = record[i]
-        return render_template("buggy-form.jinja", data=new_defaults)
-    else:
-        # if the buggy with that id is not in the database, render the 404 site
-        return page_not_found(404)
+    if request.method == "GET":
+
+        cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
+        buggy_db = cur.fetchone()
+        if buggy_db:
+            record = dict(buggy_db)
+            new_defaults = dict(defaults.copy())
+            for i in new_defaults:
+                new_defaults[i]["defaults"] = record[i]
+            return render_template(
+                "buggy-form.jinja", data=new_defaults, url=f"/edit/{buggy_id}"
+            )
+        else:
+            # if the buggy with that id is not in the database, render the 404 site
+            return page_not_found(404)
+    elif request.method == "POST":
+        print("trying to update", buggy_id)
+        # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
+        isValid, msg = validate_data(dict(request.form), validation_dict)
+        # update code
+        if isValid:
+            try:
+                with sql.connect(DATABASE_FILE) as con:
+                    cur = con.cursor()
+                    update_values = ", ".join(
+                        map(lambda a: a + "=?", [*defaults.keys(), "total_cost"])
+                    )
+                    cur.execute(
+                        f"UPDATE buggies set {update_values} WHERE id=?",
+                        (*msg.values(), calc_price(msg), buggy_id),
+                    )
+                    con.commit()
+                    msg = "Record successfully saved"
+            except Exception as e:
+                con.rollback()  # type: ignore
+                print(e)
+                msg = "Error in update operation"
+            finally:
+                con.close()
+        return redirect("/buggies")
 
 
 @app.route("/json")
