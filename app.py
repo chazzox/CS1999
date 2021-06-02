@@ -120,12 +120,12 @@ def edit_buggy(buggy_id):
         return redirect("/buggies")
 
 
-@app.route("/json")
-def json():
+@app.route("/json/<buggy_id>")
+def json(buggy_id):
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
-    cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
+    cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
     record = cur.fetchone()
     return jsonify(dict(record or {}))
 
