@@ -3,13 +3,17 @@
 <h1>Buggy</h1>
 <div id="buggyContainer">
 	{%if buggies|length > 0 %} {% for buggy in buggies%}
-	<table>
+	<table style="--primary: {{buggy['flag_color']}};--secondary: {{buggy['flag_color_secondary']}};">
 		{% for key, value in dict(buggy).items() %}
 		<tr>
 			<td>{{key}}:</td>
 			<td>{{value}}</td>
 		</tr>
 		{% endfor %}
+		<tr>
+			<td>Flag:</td>
+			<td class="flag {{buggy['flag_pattern']}}"></td>
+		</tr>
 		<tr>
 			<td colspan="2"><a href="/edit/{{buggy['id']}}">Edit This Buggy</a></td>
 		</tr>
@@ -24,10 +28,74 @@
 			<td colspan="2"><a href="/json/{{buggy['id']}}">View The JSON</a></td>
 		</tr>
 	</table>
+
 	{% endfor %} {%else%}
 	<a href="/new">No buggies found in the database, please create some first</a>
 	{%endif %}
 </div>
 <a href="/" class="button">home</a>
 
+<style>
+	.flag {
+		width: 50px;
+		height: 50px;
+	}
+	.plain,
+	.spot {
+		background-color: var(--primary);
+	}
+	.vstripe {
+		background: linear-gradient(
+				90deg,
+				var(--primary) 25%,
+				var(--secondary) 25%,
+				var(--secondary) 50%,
+				var(--primary) 50%,
+				var(--primary) 75%,
+				var(--secondary) 75%,
+				var(--secondary) 100%
+			)
+			repeat;
+	}
+	.hstripe {
+		background: linear-gradient(
+				0deg,
+				var(--primary) 25%,
+				var(--secondary) 25%,
+				var(--secondary) 50%,
+				var(--primary) 50%,
+				var(--primary) 75%,
+				var(--secondary) 75%,
+				var(--secondary) 100%
+			)
+			repeat;
+	}
+	.dstripe {
+		background: linear-gradient(
+				45deg,
+				var(--primary) 25%,
+				var(--secondary) 25%,
+				var(--secondary) 50%,
+				var(--primary) 50%,
+				var(--primary) 75%,
+				var(--secondary) 75%,
+				var(--secondary) 100%
+			)
+			repeat;
+	}
+	.checker {
+		background: conic-gradient(transparent 0, transparent 75%, var(--secondary) 75%),
+			conic-gradient(transparent 0, transparent 25%, var(--secondary) 25%, var(--secondary) 50%, transparent 50%)
+				var(--primary);
+		background-size: 40px 40px;
+	}
+	.spot:after {
+		height: 20px;
+		width: 20px;
+		background: var(--secondary);
+		border-radius: 50%;
+		display: inline-block;
+		content: '';
+	}
+</style>
 {% endblock %}
