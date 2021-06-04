@@ -1,3 +1,4 @@
+from tabnanny import check
 from flask import Flask, render_template, request, jsonify, redirect
 import sqlite3 as sql
 from validate import database_friendly, validate_data, defaults, calc_price
@@ -14,8 +15,15 @@ BUGGY_RACE_SERVER_URL = "https://rhul.buggyrace.net"
 # create a dict using key:validation from the defaults dict
 validation_dict = dict(map(lambda a: [a[0], a[1]["validation"]], defaults.items()))
 
+def cookie_required(func):
+    def check_cookie():
+        if 'poggers' not in request.cookies:
+            return render_template("login.jinja")
+        return func()
+    return check_cookie
 
 @app.route("/")
+@cookie_required
 def home():
     return render_template("index.jinja", server_url=BUGGY_RACE_SERVER_URL)
 
@@ -83,7 +91,6 @@ def edit_buggy(buggy_id):
     con.row_factory = sql.Row
     cur = con.cursor()
     if request.method == "GET":
-
         cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
         buggy_db = cur.fetchone()
         if buggy_db:
@@ -113,11 +120,9 @@ def edit_buggy(buggy_id):
                         (*msg.values(), calc_price(msg), buggy_id),
                     )
                     con.commit()
-                    msg = "Record successfully saved"
             except Exception as e:
                 con.rollback()  # type: ignore
                 print(e)
-                msg = "Error in update operation"
             finally:
                 con.close()
         return redirect("/buggies")
@@ -145,3 +150,22 @@ def poster():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
+
+
+
+"""
+
+Session Functionality:
+- Session 'Token'
+    - Secret 
+    - Validate the token server side
+    - Store part of token on client (JS?)
+    - Expiration of token
+- Ability to log out/in
+- Block edit access based on token expiration/validity
+"""
+
+"""
+step 1 - protect routes
+    require that request has a secret
+"""
