@@ -1,6 +1,6 @@
 {% extends "base.jinja" %} {% block content %}
 
-<h1>Updated Buggy</h1>
+<h1>{%if success%}Updated Buggy{%else%}Error in Updating Buggy{%endif%}</h1>
 
 <p>{{ msg }}</p>
 <p>

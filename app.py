@@ -29,6 +29,7 @@ def create_buggy():
         isValid, msg = validate_data(dict(request.form), validation_dict)
         # TODO: still *some* validation steps not implemented, do em
         # update code
+        status = 200
         if isValid:
             try:
                 with sql.connect(DATABASE_FILE) as con:
@@ -47,9 +48,12 @@ def create_buggy():
                 con.rollback()  # type: ignore
                 print(e)
                 msg = "Error in update operation"
+                status = 400
             finally:
                 con.close()
-        return render_template("updated.jinja", msg=msg)
+        else:
+            status=400
+        return render_template("updated.jinja", msg=msg,success=isValid), status
 
 
 @app.route("/buggies")
@@ -94,7 +98,6 @@ def edit_buggy(buggy_id):
             # if the buggy with that id is not in the database, render the 404 site
             return page_not_found(404)
     elif request.method == "POST":
-        print("trying to update", buggy_id)
         # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(dict(request.form), validation_dict)
         # update code

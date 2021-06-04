@@ -27,7 +27,7 @@
 			{% elif value.form.type=='select'%}
 			<select name="{{key}}">
 				{%for i in value.form.options%}
-				<option value="{{i}}" {%if value.defaults==i%}selected{%endif%}>{{i}}</option>
+				<option value="{{i}}" {%if value.defaults==i %} selected {%endif%} >{{i}}</option>
 				{%endfor%}
 			</select>
 			{% elif value.form.type=='text' %}
