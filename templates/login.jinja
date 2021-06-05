@@ -1,1 +1,4 @@
-{% extends "base.jinja" %} {% block content %} you're not logged in {% endblock %}
+{% extends "base.jinja" %} {% block content %}
+<h1>You're not logged</h1>
+<button class="button" onclick="document.cookie='session=\'test\'';location.reload()">Create a session</button>
+{% endblock %}

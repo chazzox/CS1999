@@ -1,4 +1,4 @@
-from tabnanny import check
+from functools import wraps
 from flask import Flask, render_template, request, jsonify, redirect
 import sqlite3 as sql
 from validate import database_friendly, validate_data, defaults, calc_price
@@ -15,28 +15,39 @@ BUGGY_RACE_SERVER_URL = "https://rhul.buggyrace.net"
 # create a dict using key:validation from the defaults dict
 validation_dict = dict(map(lambda a: [a[0], a[1]["validation"]], defaults.items()))
 
+
 def cookie_required(func):
-    def check_cookie():
-        if 'poggers' not in request.cookies:
+    @wraps(func)
+    def check_cookie(*args, **kwargs):
+        if "session" not in request.cookies:
             return render_template("login.jinja")
-        return func()
+        return func(*args, **kwargs)
+
     return check_cookie
+
 
 @app.route("/")
 @cookie_required
 def home():
-    return render_template("index.jinja", server_url=BUGGY_RACE_SERVER_URL)
+    con = sql.connect(DATABASE_FILE)
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM buggies")
+    buggies = cur.fetchall()
+    return render_template("buggy.jinja", buggies=buggies)
 
 
 @app.route("/new", methods=["POST", "GET"])
+@cookie_required
 def create_buggy():
     if request.method == "GET":
         return render_template("buggy-form.jinja", data=defaults, url="/new")
+
     elif request.method == "POST":
         # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(dict(request.form), validation_dict)
         # TODO: still *some* validation steps not implemented, do em
-        # update code
+        # assuming validation passes
         status = 200
         if isValid:
             try:
@@ -60,32 +71,24 @@ def create_buggy():
             finally:
                 con.close()
         else:
-            status=400
-        return render_template("updated.jinja", msg=msg,success=isValid), status
-
-
-@app.route("/buggies")
-def show_buggies():
-    con = sql.connect(DATABASE_FILE)
-    con.row_factory = sql.Row
-    cur = con.cursor()
-    cur.execute("SELECT * FROM buggies")
-    buggies = cur.fetchall()
-    return render_template("buggy.jinja", buggies=buggies)
+            status = 400
+        return render_template("updated.jinja", msg=msg, success=isValid), status
 
 
 @app.route("/delete/<buggy_id>", methods=["POST", "GET"])
+@cookie_required
 def del_buggy(buggy_id):
     if request.method == "POST":
         con = sql.connect(DATABASE_FILE)
         con.execute("DELETE FROM buggies WHERE id=?", (buggy_id,))
         con.commit()
-        return redirect("/buggies")
+        return redirect("/")
     elif request.method == "GET":
         return page_not_found(404)
 
 
 @app.route("/edit/<buggy_id>", methods=["POST", "GET"])
+@cookie_required
 def edit_buggy(buggy_id):
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
@@ -125,9 +128,10 @@ def edit_buggy(buggy_id):
                 print(e)
             finally:
                 con.close()
-        return redirect("/buggies")
+        return redirect("/")
 
 
+# i decided to make all json requests public, why not
 @app.route("/json/<buggy_id>")
 def json(buggy_id):
     con = sql.connect(DATABASE_FILE)
@@ -150,7 +154,6 @@ def poster():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
-
 
 
 """

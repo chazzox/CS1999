@@ -8,45 +8,43 @@
 <form action="{{url}}" method="post" autocomplete="off">
 	<div class="buggy-form">
 		{% for key, value in dict(data).items() %}
-		<div class="buggy-form-data">
-			<label for="{{key}}">
-				<h3>{{value.name}}</h3>
-				{% for desc_part in value.description %}
-				<p>{{desc_part}}</p>
-				{% endfor %}
-			</label>
-			{% if value.form.type =='num'%}
-			<input
-				type="number"
-				name="{{key}}"
-				min="{{value.form.min}}"
-				max="{{value.form.max}}"
-				step="{{value.form.step}}"
-				value="{{value.defaults}}"
-			/>
-			{% elif value.form.type=='select'%}
-			<select name="{{key}}">
-				{%for i in value.form.options%}
-				<option value="{{i}}" {%if value.defaults==i %} selected {%endif%} >{{i}}</option>
-				{%endfor%}
-			</select>
-			{% elif value.form.type=='text' %}
-			<input type="text" name="{{key}}" placeholder="{{value.name}}" />
-			{% elif value.form.type=='bool'%} {# Because a checkbox will not submit a value if unchecked, i opted to use a
-			radio button system instead #} <input {% if (value.defaults == True) %} checked {% endif %} type="radio"
-			name="{{key}}" value="1" />
-			<label for="{{key}}">Yes</label>
-			<input {% if (value.defaults == False) %} checked {% endif %} type="radio" name="{{key}}" value="0" />
-			<label for="{{key}}">No</label>
-			{% elif value.form.type=='color'%}
-			<input type="color" name="{{key}}" value="{{value.defaults}}" />
-			{% endif%}
-		</div>
+            <div class="buggy-form-data">
+                <label for="{{key}}">
+                    <h3>{{value.name}}</h3>
+                    {% for desc_part in value.description %}
+                    <p>{{desc_part}}</p>
+                    {% endfor %}
+                </label>
+                {% if value.form.type =='num'%}
+                    <input
+                        type="number"
+                        name="{{key}}"
+                        min="{{value.form.min}}"
+                        max="{{value.form.max}}"
+                        step="{{value.form.step}}"
+                        value="{{value.defaults}}"
+                    />
+                {% elif value.form.type=='select'%}
+                    <select name="{{key}}">
+                        {%for i in value.form.options%}
+                        <option value="{{i}}" {%if value.defaults==i %} selected {%endif%} >{{i}}</option>
+                        {%endfor%}
+                    </select>
+                {% elif value.form.type=='text' %}
+                    <input type="text" name="{{key}}" placeholder="{{value.name}}" />
+                {% elif value.form.type=='bool'%} 
+                    {# Because a checkbox will not submit a value if unchecked, i opted to use a radio button system instead #} 
+                    <input {% if (value.defaults == True) %} checked {% endif %} type="radio"
+                    name="{{key}}" value="1" />
+                    <label for="{{key}}">Yes</label>
+                    <input {% if (value.defaults == False) %} checked {% endif %} type="radio" name="{{key}}" value="0" />
+                    <label for="{{key}}">No</label>
+                {% elif value.form.type=='color'%}
+                    <input type="color" name="{{key}}" value="{{value.defaults}}" />
+                {% endif%}
+            </div>
 		{% endfor %}
 	</div>
 	<input type="submit" class="button" />
 </form>
-
-<a href="/" class="button">home</a>
-
 {% endblock %}
