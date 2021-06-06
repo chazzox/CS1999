@@ -20,7 +20,7 @@ def cookie_required(func):
     @wraps(func)
     def check_cookie(*args, **kwargs):
         if "session" not in request.cookies:
-            return render_template("login.jinja")
+            return render_template("login.jinja"), 401
         return func(*args, **kwargs)
 
     return check_cookie
