@@ -100,7 +100,6 @@ input[type='color'] {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
-	margin-bottom: 50px;
 }
 
 .buggy-form > .buggy-form-data {
