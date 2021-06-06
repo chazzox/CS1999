@@ -134,13 +134,23 @@ table td {
 	padding: 6px;
 	border: 1px solid white;
 }
+table form {
+	margin: 0;
+}
+
+table form input[type='submit'] {
+	padding: 0;
+}
+
+table {
+	margin: 15px;
+}
 
 #buggyContainer {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 	width: 100%;
-	margin: 25px;
 }
 
 #buggyContainer input[type='submit'] {
@@ -153,4 +163,13 @@ table td {
 
 h1 {
 	margin: 10;
+}
+
+nav {
+	background-color: var(--secondaryBackground);
+	padding: 15px;
+}
+
+nav > a {
+	margin: 5px;
 }

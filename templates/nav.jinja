@@ -1,1 +1,15 @@
-<nav><a href="/" class="nav-item">Home</a><a href="/new">Create a New buggy</a></nav>
+<nav>
+	<a href="/" class="nav-item">Home</a>
+	<a href="/new">Create a New buggy</a>
+	<button onclick="document.cookie = 'session=;expires='+new Date().toGMTString();location.reload()">Logout</button>
+</nav>
+
+<style>
+	nav > button {
+		background: none;
+		text-decoration: underline;
+		border: none;
+		font-size: 16px;
+		cursor: pointer;
+	}
+</style>

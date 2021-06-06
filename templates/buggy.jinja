@@ -1,6 +1,6 @@
-{% extends "base.jinja" %} {% block content %}
+{% extends "base.jinja" %} {% include "nav.jinja" %} {% block content %}
 
-<h1>Buggy</h1>
+<h1>Buggies</h1>
 <div id="buggyContainer">
 	{%if buggies|length > 0 %} {% for buggy in buggies%}
 	<table style="--primary: {{buggy['flag_color']}};--secondary: {{buggy['flag_color_secondary']}};">
@@ -96,6 +96,9 @@
 		border-radius: 50%;
 		display: inline-block;
 		content: '';
+	}
+	.spot {
+		text-align: center;
 	}
 </style>
 {% endblock %}
