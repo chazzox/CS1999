@@ -10,7 +10,7 @@ DATA=$(curl -si -X POST "$URL/new" | grep 'HTTP/1.0')
 if [[ $DATA =~ "400" ]]; then
     echo "$DATA - TEST PASSED MOVING ON."
 else
-    echo "TEST FAILED, PLEASE FIX."
+    echo "$DATA - TEST FAILED, PLEASE FIX."
 fi
 
 echo 'Testing a post request with missing keys (Expecting code 400)'
@@ -18,7 +18,7 @@ DATA=$(curl -si -X POST -d 'qty_wheels=4&algo=steady&flag_pattern=plain&qty_tyre
 if [[ $DATA =~ "400" ]]; then
     echo "$DATA - TEST PASSED MOVING ON."
 else
-    echo "TEST FAILED, PLEASE FIX."
+    echo "$DATA - TEST FAILED, PLEASE FIX."
 fi
 
 echo 'Testing a post request with invalid data (Expecting code 400)'
@@ -26,7 +26,7 @@ DATA=$(curl -si -X POST -d 'qty_wheels=foo&power_type=bar&power_units=green&aux_
 if [[ $DATA =~ "400" ]]; then
     echo "$DATA - TEST PASSED MOVING ON."
 else
-    echo "TEST FAILED, PLEASE FIX."
+    echo "$DATA - TEST FAILED, PLEASE FIX."
 fi
 
 echo 'Testing a post request with valid data (Expecting code 200)'
@@ -34,7 +34,7 @@ DATA=$(curl -si -X POST -d 'qty_wheels=4&power_type=petrol&power_units=1&aux_pow
 if [[ $DATA =~ "200" ]]; then
     echo "$DATA - TEST PASSED MOVING ON."
 else
-    echo "TEST FAILED, PLEASE FIX."
+    echo "$DATA - TEST FAILED, PLEASE FIX."
 fi
 
 read -n 1 -r -s -p $'Press enter to exit script...\n'
