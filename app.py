@@ -6,6 +6,8 @@ from validate import database_friendly, validate_data, defaults, calc_price
 
 # Initialise websever
 app = Flask(__name__)
+# means that the JSONify function does not sort keys alphabetically and keeps the nice order
+app.config["JSON_SORT_KEYS"] = False
 
 # CONTANTS
 DATABASE_FILE = "database.db"
