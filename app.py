@@ -67,7 +67,6 @@ def create_buggy():
                     msg = "Record successfully saved"
             except Exception as e:
                 con.rollback()  # type: ignore
-                print(e)
                 msg = "Error in update operation"
                 status = 400
             finally:
@@ -142,6 +141,16 @@ def json(buggy_id):
     cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
     record = cur.fetchone()
     return jsonify(dict(record or {}))
+
+
+@app.route("/json")
+def jsonAll():
+    con = sql.connect(DATABASE_FILE)
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM buggies")
+    buggies = cur.fetchall()
+    return jsonify(list((dict(buggy) for buggy in buggies)))
 
 
 @app.errorhandler(404)
