@@ -193,7 +193,7 @@ defaults = {
             "Must be even.",
         ],
         "defaults": "4",
-        "validation": And(Use(int), lambda n: n >= 4),
+        "validation": And(Use(int), lambda n: n >= 4 and n % 2 == 0),
         "form": {"type": "num", "min": "4", "max": "", "step": 2},
         "cost": 0,
     },

@@ -36,7 +36,7 @@ def home():
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies")
     buggies = cur.fetchall()
-    return render_template("buggy.jinja", buggies=buggies)
+    return render_template("buggies.jinja", buggies=buggies)
 
 
 @app.route("/new", methods=["POST", "GET"])
