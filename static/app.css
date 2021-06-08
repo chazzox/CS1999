@@ -11,6 +11,7 @@ body {
 }
 
 :root {
+	/* https://github.com/chazzox/Hydrova/blob/master/src/utils/themes.ts (I wrote this) */
 	--primaryBackground: rgb(32, 34, 37);
 	--secondaryBackground: rgb(20, 20, 26);
 	--tertiaryBackground: rgb(39, 41, 44);
@@ -23,6 +24,9 @@ body {
 	--buttonTextColor: rgb(255, 255, 255);
 	--borderColor: rgb(59, 59, 59);
 	--warningColor: #dc3454;
+	/* https://getcssscan.com/css-box-shadow-examples yeah box shadows are to hard to get right */
+	--boxShadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+		rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 body {
@@ -38,6 +42,10 @@ body {
 
 .main-content > p {
 	padding: 5px 20px;
+}
+.main-content > h1 {
+	margin: 10px;
+	font-size: 25px;
 }
 
 .spacer {
@@ -108,6 +116,10 @@ input[type='color'] {
 	background-color: var(--secondaryBackground);
 	padding: 8px;
 	border-radius: 8px;
+	transition: box-shadow 0.2s;
+}
+.buggy-form > .buggy-form-data:hover {
+	box-shadow: var(--boxShadow);
 }
 
 input[type='color'] {
@@ -133,16 +145,27 @@ table td {
 	padding: 6px;
 	border: 1px solid white;
 }
+
 table form {
 	margin: 0;
 }
 
+table tr td,
+table form input[type='submit'] {
+	font-size: 15px;
+}
+
 table form input[type='submit'] {
 	padding: 0;
+	background: none;
+	border: none;
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 table {
 	margin: 15px;
+	box-shadow: var(--boxShadow);
 }
 
 #buggyContainer {
@@ -150,18 +173,6 @@ table {
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 	width: 100%;
-}
-
-#buggyContainer input[type='submit'] {
-	background: none;
-	border: none;
-	font-size: 16px;
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-h1 {
-	margin: 10;
 }
 
 nav {
