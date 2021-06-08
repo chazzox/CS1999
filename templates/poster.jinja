@@ -3,20 +3,50 @@
 	#cs1999-tasks {
 		margin-top: 4em;
 	}
-	#cs1999-tasks .phase .task-container {
+	.phase .task-container {
 		display: flex;
 		justify-content: space-evenly;
 		flex-wrap: wrap;
+		align-items: center;
 	}
-	#cs1999-tasks .phase .task {
+	.phase .task {
 		background-color: var(--secondaryBackground);
 		margin: 1em;
 		padding: 1em;
 		border-radius: 15px;
 		box-shadow: var(--boxShadow);
+		max-width: 600px;
 	}
-	#cs1999-tasks .phase .task h2 {
+
+	.phase .task.big {
+		max-width: 80vw;
+	}
+
+	.task h2 {
 		font-size: 17px;
+	}
+	.task pre {
+		background-color: var(--primaryAccentBackground);
+		box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+		padding: 8px;
+		border-radius: 8px;
+		cursor: default;
+		overflow: auto;
+	}
+	pre,
+	code {
+		text-align: left;
+		white-space: pre;
+		word-spacing: normal;
+		word-break: normal;
+		word-wrap: normal;
+	}
+	p > code {
+		background-color: var(--primaryAccentBackground);
+		padding: 5px;
+		border-radius: 5px;
+		display: inline-block;
+		margin: 2px;
 	}
 </style>
 <section>
@@ -33,7 +63,7 @@
 			<div class="task">
 				<h2>0-GET Get the source code</h2>
 				<p>
-					I logged into the server website and conntected my github account after that i forked it from within the
+					I logged into the server website and connected my github account after that I forked it from within the
 					website
 				</p>
 				<p>
@@ -44,19 +74,17 @@
 			<div class="task">
 				<h2>0-RUN Get app running and view it in a browser</h2>
 				<p>
-					I ran<code><pre>pip install -r .\requirements.txt</pre></code>To install the depenancies
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					I ran <code>pip install -r .\requirements.txt</code> To install the dependencies then running
+					<code>python app.py</code>
+					To actually run the server and accessed it on
+					<code>http://localhost:5000/</code>
 				</p>
 			</div>
 			<div class="task">
 				<h2>0-CHANGE Make a change to a template and see it appear</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					I changed <code>&lt;h1&gt;Make buggy&lt;/h1&gt;</code> To <code>&lt;h1&gt;New buggy&lt;/h1&gt;</code> And
+					refreshed the page to see if the changes worked (They did)
 				</p>
 			</div>
 		</div>
@@ -64,137 +92,201 @@
 	<div class="phase">
 		<h1>Phase 1</h1>
 		<div class="task-container">
-			<div class="task">
-				<h2>1-ADD Add more data to the form</h2>
+			<div class="task big">
+				<h2>1-ADD Add more data to the form AND 1-VALID Add basic data validation</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
+					I thought a while about this because I realised that every time I add a new property to the system i
+					might have to add validation, entry form data and default values to the property in multiple different
+					places throughout the webapp. This way of doing things did not appeal to me, as I am lazy. So I started
+					to look into validation methods. I found a couple libraries
+					<a href="https://pypi.org/project/jsonschema/">jsonschema</a> and
+					<a href="https://pypi.org/project/schema/">schema</a>. And after some deliberation I decided to go with
+					<a href="https://pypi.org/project/schema/">schema</a> This was because it was it allowed for conversion
+					methods that could convert the string from the request straight into a python type. Once I decided on
+					this I devised a structure to fit all of the necessary points to reduce the total amount of work needed
+					when adding new values. This is what I came up with:
 				</p>
+				<pre><code>"qty_wheels": {
+    "name": "Number of wheels",
+    "description": [
+        "The more wheels, the more traction. But more importantly, quantity of wheels is also a measure of the buggy's size, so an indicator of strength. The chassis of a heavy buggy with too few wheels might break."
+        "To put it another way, if you add a lot of mass to your buggy, you'll need to add extra pairs of wheels.",
+        "Wheels are free: you pay for the tyres.",
+        "Must be even.",
+    ],
+    "defaults": "4",
+    "validation": And(Use(int), lambda n: n >= 4 and n % 2 == 0),
+    "form": {"type": "num", "min": "4", "max": "", "step": 2},
+    "cost": 0,
+},</code></pre>
 				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					They key is the nasty server side name that the database and the buggy server uses to store the value,
+					the name is the human friendly version we display on the site. Description is a series of an array of
+					strings used to produce multiple <code>&lt;h1&gt;</code> tags that tells the user what each property is
+					for. Defaults is the default value that the form takes. Validation is a value that describes how the
+					validation library \(<a href="https://pypi.org/project/schema/">schema</a>\) should deal with the value,
+					conversion, min size, odd/even, etc. Form describes how the site should render the form input it the type
+					can either be "bool", "num", "select", "text" or "color" each taking its own customization values. Cost
+					is used for calculating cost later. I'll detail how that works in 2-COST.
 				</p>
 			</div>
-			<div class="task">
-				<h2>1-VALID Add basic data validation</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
+			<div class="task big">
 				<h2>1-STYLE Style your editor just how you like it</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
+					I wanted to create a nice looking and responsive stylesheet for the site. To do this I used css variables
+					and a lot of flex box
 				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
+				<pre><code>:root {
+	--primaryBackground: rgb(32, 34, 37);
+	--secondaryBackground: rgb(20, 20, 26);
+	--tertiaryBackground: rgb(39, 41, 44);
+	--primaryAccentBackground: rgb(88, 94, 254);
+	--secondaryAccentBackground: rgb(52, 58, 64);
+	--tertiaryAccentBackground: rgb(46, 50, 94);
+	--primaryText: rgb(255, 255, 255);
+	--secondaryText: rgba(255, 255, 255, 0.66);
+	--tertiaryText: rgba(255, 255, 255, 0.4);
+	--buttonTextColor: rgb(255, 255, 255);
+	--borderColor: rgb(59, 59, 59);
+	--warningColor: #dc3454; 
+	--boxShadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+		rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}</code></pre>
 			</div>
 		</div>
 	</div>
 	<div class="phase">
-		<h1>Phase 0</h1>
+		<h1>Phase 2</h1>
 		<div class="task-container">
 			<div class="task">
 				<h2>2-EDIT Edit the record by loading its current values into the form</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					Because of the dict I used to pass in everything earlier, before the defaults dict used to render the
+					edit form overrides all of the defaults values with the values of the buggy being edited in the database
 				</p>
 			</div>
 			<div class="task">
 				<h2>2-FORM Make the form better</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					The dict used earlier has descriptions for each property with a nice name, i used a hover effect to le
+					let the user know which value they are focused on, and also used css flex so that the different forms
+					where in a more space efficient layout that responds to window size.
 				</p>
 			</div>
 			<div class="task">
 				<h2>2-COST Calculate and save the game cost of the buggy</h2>
+				<p>For the enum data I created dicts with the associated cost like this:</p>
+				<pre><code>power_dict = {
+    "petrol": 4,
+    "fusion": 400,
+    "steam": 3,
+    "bio": 5,
+    "electric": 20,
+    "rocket": 16,
+    "hamster": 3,
+    "thermo": 300,
+    "solar": 40,
+    "wind": 20,
+}</code></pre>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					and 'hardcoded' them individually everything else was as simple as looping through request, index the
+					dict for cost and adding up
 				</p>
 			</div>
 			<div class="task">
 				<h2>2-RULES Add validation according to the game rules</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					Min/max and odd/even could be done within the library but rules like
+					<code>qty_wheels&lt;qty_tyres</code> had to be done after the conversion and initial validation.
 				</p>
 			</div>
 		</div>
 	</div>
 	<div class="phase">
-		<h1>Phase 0</h1>
+		<h1>Phase 3</h1>
 		<div class="task-container">
 			<div class="task">
 				<h2>3-ENV Switch between dev and production environments</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
+				<p>Added a file <code>.flaskenv</code> and added <code>python-dotenv</code> to the project requirements.</p>
 			</div>
+
 			<div class="task">
 				<h2>3-AUTOFILL Add auto-fill to the edit forms</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
+				<p>Defaults where loaded automatically because of the dict was used to render everything:</p>
+				<pre><code>{% raw %}&lt;input
+    type="number"
+    name="{{key}}"
+    min="{{value.form.min}}"
+    max="{{value.form.max}}"
+    step="{{value.form.step}}"
+    value="{{value.defaults}}"
+/&gt;
+{% endraw %}</code></pre>
 			</div>
 			<div class="task">
 				<h2>3-MULTI Allow different buggies to be created</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
+					The syntax for <code>INSERT</code> statements is different to <code>UPDATE</code> so i had to change the
+					way I formatted the string inside the statement
 				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
+				<pre><code> update_values = ", ".join(
+    map(lambda a: a + "=?", [*defaults.keys(), "total_cost"])
+)
+cur.execute(
+    f"UPDATE buggies set {update_values} WHERE id=?",
+    (*msg.values(), calc_price(msg), DEFAULT_BUGGY_ID),
+)</code></pre>
+				<p>became</p>
+				<pre><code>keys = ", ".join([*defaults.keys(), "total_cost"])
+values = ", ".join(
+    map(
+        lambda a: str(database_friendly(a)),
+        [*msg.values(), calc_price(msg)],
+    )
+)
+cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")</code></pre>
 			</div>
 			<div class="task">
 				<h2>3-DEL Allow buggies to be deleted</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
+				<p>Added a deletion POST route that executed a DELETE sql statement on the DB then redirect to home page</p>
+				<p>I also added a GET method that would just render the 404 site</p>
 			</div>
 			<div class="task">
 				<h2>3-FLAG Display the pennant graphically</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
+					Instead of making my own svg assets I decided to make the flags in pure css to do this i used a mixture
+					of pseudo elements and background images. For example this is how i made the spot flag
 				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
+				<pre><code>.spot {
+    text-align: center;
+}
+.spot:after {
+    height: 20px;
+    width: 20px;
+    background: var(--secondary);
+    border-radius: 50%;
+    display: inline-block;
+    content: '';
+}</code></pre>
 			</div>
 			<div class="task">
 				<h2>3-TESTS Write some tests</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
+					To write the tests I used a bash script and curl. I send requests to the server and test against HTTP
+					headers returned for example this request would be tested for status code code <code>400</code> as there
+					is no form data attached (Bad request)
 				</p>
+				<pre><code>curl -si -X POST --cookie "session=TRUE" "$URL/new"</code></pre>
 				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					And this request would be tested for status code <code>401</code> as the form data is there but no
+					session cookie is present (Unauthorised)
 				</p>
+				<pre><code>curl -si -X POST -d 'qty_wheels=4&power_type=petrol&power_units=1&aux_power_type=None&aux_power_units=0&hamster_booster=0&flag_color=#000000&flag_pattern=plain&flag_color_secondary=#000000&tyres=knobbly&qty_tyres=4&armour=None&attack=None&qty_attacks=0&fireproof=0&insulated=0&antibiotic=0&banging=0&algo=offensive' "$URL/new"</code></pre>
 			</div>
 		</div>
 	</div>
 	<div class="phase">
-		<h1>Phase 0</h1>
+		<h1>Phase 4</h1>
 		<div class="task-container">
 			<div class="task">
 				<h2>4-USERS Add users (and sessions) so you know who is editing a buggy</h2>
@@ -225,56 +317,6 @@
 			</div>
 			<div class="task">
 				<h2>4-PASS Add password protection to the users</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-		</div>
-	</div>
-	<div class="phase">
-		<h1>Phase 0</h1>
-		<div class="task-container">
-			<div class="task">
-				<h2>5-VIZ Visual representation of the buggy</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
-				<h2>5-RESET Password reset</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
-				<h2>5-RACELOG Store a history of race results for the buggies in your app</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
-				<h2>5-ADMIN Add admin capabilities to superusers</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
-				<h2>5-API Use the server API for submitting the buggy data</h2>
 				<p>
 					<!-- sentence on _how_ you fixed it -->
 				</p>
