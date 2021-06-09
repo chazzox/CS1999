@@ -253,7 +253,7 @@ cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")</code></pre>
 			<div class="task">
 				<h2>3-DEL Allow buggies to be deleted</h2>
 				<p>Added a deletion POST route that executed a DELETE sql statement on the DB then redirect to home page</p>
-				<p>I also added a GET method that would just render the 404 site</p>
+				<p>I also added a GET route that would just render the 404 page if the user accidentally navigated there</p>
 			</div>
 			<div class="task">
 				<h2>3-FLAG Display the pennant graphically</h2>
@@ -295,37 +295,26 @@ cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")</code></pre>
 			<div class="task">
 				<h2>4-USERS Add users (and sessions) so you know who is editing a buggy</h2>
 				<p>
-					<!-- sentence on _how_ you fixed it -->
+					Although I did not complete this section, I did add sessions by way of checking for a session cookie on
+					the request. Users could create and delete this cookie with ease thanks to a navbar button as well as a
+					decorator function forcing users to create a cookie on most routes before they could actually use them.
 				</p>
+				<pre><code>def cookie_required(func):
+    @wraps(func)
+    def check_cookie(*args, **kwargs):
+        if "session" not in request.cookies:
+            return render_template("login.jinja"), 401
+        return func(*args, **kwargs)
+    return check_cookie
+
+@app.route("/")
+@cookie_required
+def home():
+    con = sql.connect(DATABASE_FILE)
+    etc...</code></pre>
 				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
-				<h2>4-REGISTER Make a new user</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
-				<h2>4-OWNER A buggy belongs to a user</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
-				</p>
-			</div>
-			<div class="task">
-				<h2>4-PASS Add password protection to the users</h2>
-				<p>
-					<!-- sentence on _how_ you fixed it -->
-				</p>
-				<p>
-					<!-- sentence(s) on anything interesting/incomplete you did -->
+					Here the decorator function is rendering the login template if the user is not authorised to access that
+					page
 				</p>
 			</div>
 		</div>
