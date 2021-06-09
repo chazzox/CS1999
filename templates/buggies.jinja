@@ -1,6 +1,7 @@
 {% extends "base.jinja" %} {%block nav%} {% include "nav.jinja" %} {%endblock%} {% block content %}
 
 <h1>Buggies</h1>
+<a href="/json" class="button big">All of your buggies' json</a>
 <div id="buggyContainer">
 	{%if buggies|length > 0 %} {% for buggy in buggies%}
 	<table style="--primary: {{buggy['flag_color']}};--secondary: {{buggy['flag_color_secondary']}};">
@@ -88,9 +89,7 @@
 				var(--primary);
 		background-size: 40px 40px;
 	}
-	.spot {
-		text-align: center;
-	}
+
 	.spot:after {
 		height: 20px;
 		width: 20px;
@@ -99,6 +98,9 @@
 		display: inline-block;
 		/* for some reason this is required for the spot to show */
 		content: '';
+	}
+	.button.big {
+		font-size: max(min(0.5vw, 0.5em), 1rem);
 	}
 </style>
 {% endblock %}

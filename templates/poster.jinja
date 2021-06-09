@@ -48,6 +48,10 @@
 		display: inline-block;
 		margin: 2px;
 	}
+
+	code::selection {
+		background: var(--tertiaryAccentBackground);
+	}
 </style>
 <section>
 	<h1>What is good about my editor?</h1>
@@ -76,7 +80,7 @@
 				<p>
 					I ran <code>pip install -r .\requirements.txt</code> To install the dependencies then running
 					<code>python app.py</code>
-					To actually run the server and accessed it on
+					To run the server and then accessed it on
 					<code>http://localhost:5000/</code>
 				</p>
 			</div>
