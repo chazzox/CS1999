@@ -4,6 +4,9 @@
 poetry.lock
 pyproject.toml
 
+# test files that never need to be commited
+test.py
+
 # explicitly deny the editor's default SQLite database file:
 database.db
 

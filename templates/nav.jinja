@@ -1,22 +1,47 @@
 <nav>
-	<a href="/" class="nav-item">Home</a>
+	<a href="/">Home</a>
 	<a href="/new">Create New buggy</a>
 	<button onclick="document.cookie='session=;expires='+new Date().toGMTString();location.reload()">Logout</button>
 </nav>
 
 <style>
-	nav > button {
-		background: none;
-		text-decoration: underline;
-		border: none;
-		font-size: 16px;
-		cursor: pointer;
-		float: right;
-	}
 	nav {
 		position: sticky;
 		width: 100%;
 		top: 0;
-		display: inline-block;
+		display: flex;
+		padding: 0;
+		background-color: var(--secondaryBackground);
+	}
+
+	nav > button {
+		font-size: 16px;
+		cursor: pointer;
+	}
+
+	nav > button,
+	nav > a {
+		border: none;
+		text-decoration: none;
+		padding: 10px;
+		margin: 0;
+		background: none;
+	}
+
+	nav > button:hover,
+	nav > a:hover {
+		background: white;
+		color: black;
+	}
+
+	nav > a.active {
+		background: var(--primaryAccentBackground);
+		color: white;
 	}
 </style>
+
+<script>
+	document.querySelectorAll('nav > a').forEach((a) => {
+		if (a.href == location.href) a.classList.add('active');
+	});
+</script>
