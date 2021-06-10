@@ -1,3 +1,4 @@
+import copy
 from flask import Flask, render_template, request, jsonify, redirect
 import sqlite3 as sql
 from functools import wraps
@@ -92,10 +93,11 @@ def edit_buggy(buggy_id):
         buggy_db = cur.fetchone()
         if buggy_db:
             record = dict(buggy_db)
-            # TODO: improve this code
-            new_defaults = dict(DEFAULTS.copy())
-            for i in new_defaults:
-                new_defaults[i]["DEFAULTS"] = record[i]
+            # copying dict and overwritting the defaults with the buggy values
+            new_defaults = {
+                k: {**v, "defaults": record[k]}
+                for (k, v) in copy.deepcopy(DEFAULTS).items()
+            }
             return render_template(
                 "buggy-form.jinja", data=new_defaults, url=f"/edit/{buggy_id}"
             )
