@@ -254,7 +254,7 @@ DEFAULTS = {
             "Hamsters can multiboost.",
         ],
         "defaults": "0",
-        "validation": And(Use(int), lambda n: n >= 0),
+        "validation": Use(int),
         "form": {"type": "num", "min": "0", "max": "", "step": ""},
         "cost": 0,
     },
@@ -355,9 +355,7 @@ DEFAULTS = {
     },
     "insulated": {
         "name": "Insulated?",
-        "description": [
-            "Is the buggy protected with a rubber mesh protecting itself from electric lance attacks?"
-        ],
+        "description": ["Is the buggy protected with a rubber mesh protecting itself from electric lance attacks?"],
         "defaults": False,
         "validation": Use(lambda a: bool(int(a))),
         "form": {"type": "bool"},
