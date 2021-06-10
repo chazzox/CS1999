@@ -7,11 +7,11 @@ from constants import DEFAULTS, DATABASE_FILE
 
 # Initialise websever
 app = Flask(__name__)
-# means that the jsonify function does not sort keys alphabetically and keeps the nice order
+# Means that the jsonify function does not sort keys alphabetically and keeps the nice order
 app.config["JSON_SORT_KEYS"] = False
 
 
-# decorator function used to ensure session cookie
+# Decorator function used to ensure session cookie
 def cookie_required(func):
     @wraps(func)
     def check_cookie(*args, **kwargs):
@@ -40,27 +40,25 @@ def create_buggy():
         return render_template("buggy-form.jinja", data=DEFAULTS, url="/new")
 
     elif request.method == "POST":
-        # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
+        # Validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
         isValid, msg = validate_data(request.form)
-        # assuming validation passes
+        # Assuming validation passes
         status = 200
         if isValid:
             con = sql.connect(DATABASE_FILE)
             con.row_factory = sql.Row
+            cur = con.cursor()
+            keys = ", ".join([*DEFAULTS.keys(), "total_cost"])
+            values = ", ".join(
+                map(lambda a: str(database_friendly(a)), [*msg.values(), calc_price(msg)])
+            )
             try:
-                cur = con.cursor()
-                keys = ", ".join([*DEFAULTS.keys(), "total_cost"])
-                values = ", ".join(
-                    map(
-                        lambda a: str(database_friendly(a)),
-                        [*msg.values(), calc_price(msg)],
-                    )
-                )
                 cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")
                 con.commit()
                 msg = "Record successfully saved"
             except Exception as e:
-                con.rollback()  # type: ignore
+                con.rollback()
+                print(repr(e))
                 msg = "Error in update operation"
                 status = 400
             finally:
@@ -93,10 +91,9 @@ def edit_buggy(buggy_id):
         buggy_db = cur.fetchone()
         if buggy_db:
             record = dict(buggy_db)
-            # copying dict and overwritting the defaults with the buggy values
+            # Copying dict and overwritting the defaults with the buggy values
             new_defaults = {
-                k: {**v, "defaults": record[k]}
-                for (k, v) in copy.deepcopy(DEFAULTS).items()
+                k: {**v, "defaults": record[k]} for (k, v) in copy.deepcopy(DEFAULTS).items()
             }
             return render_template(
                 "buggy-form.jinja", data=new_defaults, url=f"/edit/{buggy_id}"
@@ -106,12 +103,10 @@ def edit_buggy(buggy_id):
     elif request.method == "POST":
         isValid, msg = validate_data(request.form)
         if isValid:
+            update_keys = ", ".join(map(lambda a: a + "=?", [*DEFAULTS.keys(), "total_cost"]))
             try:
-                update_values = ", ".join(
-                    map(lambda a: a + "=?", [*DEFAULTS.keys(), "total_cost"])
-                )
                 cur.execute(
-                    f"UPDATE buggies set {update_values} WHERE id=?",
+                    f"UPDATE buggies set {update_keys} WHERE id=?",
                     (
                         *msg.values(),
                         calc_price(msg),
@@ -122,8 +117,7 @@ def edit_buggy(buggy_id):
             except Exception as e:
                 con.rollback()
                 print(e)
-            finally:
-                con.close()
+        con.close()
         return redirect("/")
 
 
@@ -161,8 +155,8 @@ def poster():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
-"""
 
+"""
 Session Functionality:
 - Session 'Token'
     - Secret 
@@ -171,8 +165,7 @@ Session Functionality:
     - Expiration of token
 - Ability to log out/in
 - Block edit access based on token expiration/validity
-"""
-"""
+
 step 1 - protect routes
     require that request has a secret
 """
