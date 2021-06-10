@@ -1,23 +1,16 @@
-from functools import wraps
 from flask import Flask, render_template, request, jsonify, redirect
 import sqlite3 as sql
-from validate import database_friendly, validate_data, defaults, calc_price
-
+from functools import wraps
+from validate import database_friendly, validate_data, calc_price
+from constants import DEFAULTS, DATABASE_FILE
 
 # Initialise websever
 app = Flask(__name__)
-# means that the JSONify function does not sort keys alphabetically and keeps the nice order
+# means that the jsonify function does not sort keys alphabetically and keeps the nice order
 app.config["JSON_SORT_KEYS"] = False
 
-# CONTANTS
-DATABASE_FILE = "database.db"
-DEFAULT_BUGGY_ID = "1"
-BUGGY_RACE_SERVER_URL = "https://rhul.buggyrace.net"
 
-# create a dict using key:validation from the defaults dict
-validation_dict = dict(map(lambda a: [a[0], a[1]["validation"]], defaults.items()))
-
-
+# decorator function used to ensure session cookie
 def cookie_required(func):
     @wraps(func)
     def check_cookie(*args, **kwargs):
@@ -43,28 +36,28 @@ def home():
 @cookie_required
 def create_buggy():
     if request.method == "GET":
-        return render_template("buggy-form.jinja", data=defaults, url="/new")
+        return render_template("buggy-form.jinja", data=DEFAULTS, url="/new")
 
     elif request.method == "POST":
         # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
-        isValid, msg = validate_data(dict(request.form), validation_dict)
-        # TODO: still *some* validation steps not implemented, do em
+        isValid, msg = validate_data(request.form)
         # assuming validation passes
         status = 200
         if isValid:
+            con = sql.connect(DATABASE_FILE)
+            con.row_factory = sql.Row
             try:
-                with sql.connect(DATABASE_FILE) as con:
-                    cur = con.cursor()
-                    keys = ", ".join([*defaults.keys(), "total_cost"])
-                    values = ", ".join(
-                        map(
-                            lambda a: str(database_friendly(a)),
-                            [*msg.values(), calc_price(msg)],
-                        )
+                cur = con.cursor()
+                keys = ", ".join([*DEFAULTS.keys(), "total_cost"])
+                values = ", ".join(
+                    map(
+                        lambda a: str(database_friendly(a)),
+                        [*msg.values(), calc_price(msg)],
                     )
-                    cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")
-                    con.commit()
-                    msg = "Record successfully saved"
+                )
+                cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")
+                con.commit()
+                msg = "Record successfully saved"
             except Exception as e:
                 con.rollback()  # type: ignore
                 msg = "Error in update operation"
@@ -99,40 +92,40 @@ def edit_buggy(buggy_id):
         buggy_db = cur.fetchone()
         if buggy_db:
             record = dict(buggy_db)
-            new_defaults = dict(defaults.copy())
+            # TODO: improve this code
+            new_defaults = dict(DEFAULTS.copy())
             for i in new_defaults:
-                new_defaults[i]["defaults"] = record[i]
+                new_defaults[i]["DEFAULTS"] = record[i]
             return render_template(
                 "buggy-form.jinja", data=new_defaults, url=f"/edit/{buggy_id}"
             )
         else:
-            # if the buggy with that id is not in the database, render the 404 site
             return page_not_found(404)
     elif request.method == "POST":
-        # validating, msg will become either the validated and converted form data or the error message, and isValid is a boolean
-        isValid, msg = validate_data(dict(request.form), validation_dict)
-        # update code
+        isValid, msg = validate_data(request.form)
         if isValid:
             try:
-                with sql.connect(DATABASE_FILE) as con:
-                    cur = con.cursor()
-                    update_values = ", ".join(
-                        map(lambda a: a + "=?", [*defaults.keys(), "total_cost"])
-                    )
-                    cur.execute(
-                        f"UPDATE buggies set {update_values} WHERE id=?",
-                        (*msg.values(), calc_price(msg), buggy_id),
-                    )
-                    con.commit()
+                update_values = ", ".join(
+                    map(lambda a: a + "=?", [*DEFAULTS.keys(), "total_cost"])
+                )
+                cur.execute(
+                    f"UPDATE buggies set {update_values} WHERE id=?",
+                    (
+                        *msg.values(),
+                        calc_price(msg),
+                        buggy_id,
+                    ),
+                )
+                con.commit()
             except Exception as e:
-                con.rollback()  # type: ignore
+                con.rollback()
                 print(e)
             finally:
                 con.close()
         return redirect("/")
 
 
-# i decided to make all json requests public, why not
+# TODO: make buggy json's locked to the og user
 @app.route("/json/<buggy_id>")
 def json(buggy_id):
     con = sql.connect(DATABASE_FILE)
@@ -143,6 +136,7 @@ def json(buggy_id):
     return jsonify(dict(record or {}))
 
 
+# TODO: when users are implemented only return buggies that match the user ID
 @app.route("/json")
 def jsonAll():
     con = sql.connect(DATABASE_FILE)
@@ -165,8 +159,6 @@ def poster():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
-
-
 """
 
 Session Functionality:
@@ -178,7 +170,6 @@ Session Functionality:
 - Ability to log out/in
 - Block edit access based on token expiration/validity
 """
-
 """
 step 1 - protect routes
     require that request has a secret
