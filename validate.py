@@ -42,7 +42,7 @@ def validate_data(data):
     # qty_tyres >= qty_wheels
     if not (validated["qty_tyres"] >= validated["qty_wheels"]):
         return (False, "Quantity of tyres needs to be greater or equal to Quantity of wheels")
-    # 1x non-consumable reactor uni
+    # 1x non-consumable reactor unit
     # TODO: implement setting 1x unit of fuel upon selection of reactor on client side
     if (
         validated["power_type"] in ["fusion", "thermo", "solar", "wind"]

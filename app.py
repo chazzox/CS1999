@@ -90,13 +90,14 @@ def edit_buggy(buggy_id):
         cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
         buggy_db = cur.fetchone()
         if buggy_db:
-            record = dict(buggy_db)
             # Copying dict and overwritting the defaults with the buggy values
-            new_defaults = {
-                k: {**v, "defaults": record[k]} for (k, v) in copy.deepcopy(DEFAULTS).items()
-            }
             return render_template(
-                "buggy-form.jinja", data=new_defaults, url=f"/edit/{buggy_id}"
+                "buggy-form.jinja",
+                data={
+                    k: {**v, "defaults": dict(buggy_db)[k]}
+                    for (k, v) in copy.deepcopy(DEFAULTS).items()
+                },
+                url=f"/edit/{buggy_id}",
             )
         else:
             return page_not_found(404)

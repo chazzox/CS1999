@@ -1,4 +1,12 @@
 {% extends "base.jinja" %} {% block content %}
 <h1>You're not logged</h1>
 <button class="button" onclick="document.cookie='session=\'test\'';location.reload()">Create a session</button>
+<style>
+	.main-content {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		justify-content: center;
+	}
+</style>
 {% endblock %}

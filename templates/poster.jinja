@@ -18,10 +18,6 @@
 		max-width: 600px;
 	}
 
-	.phase .task.big {
-		max-width: 80vw;
-	}
-
 	.task h2 {
 		font-size: 17px;
 	}
@@ -32,6 +28,7 @@
 		border-radius: 8px;
 		cursor: default;
 		overflow: auto;
+		max-height: 300px;
 	}
 	pre,
 	code {
@@ -52,14 +49,61 @@
 	code::selection {
 		background: var(--tertiaryAccentBackground);
 	}
+	.editorFlex .reason ul {
+		list-style-position: inside;
+	}
+	.example {
+		height: 600px;
+		box-shadow: var(--boxShadow);
+		border-radius: 7px;
+	}
 </style>
-<section>
+<section id="flex_buggy_editor">
+	<!-- TODO: nice position/rotates -->
 	<h1>What is good about my editor?</h1>
 	<div class="editorFlex">
-		<h2>it is good</h2>
-		<p>additional info about why it is good</p>
+		<div class="reason">
+			<h2>Responsive Layout</h2>
+			<ul>
+				<li>CSS responds to width changes</li>
+				<li>Compatible on mobile</li>
+				<li>Flex grid use throughout</li>
+			</ul>
+		</div>
+		<img src="./static/dynamic.png" alt="" class="example" />
+	</div>
+	<div class="editorFlex">
+		<div class="reason">
+			<h2>Pleasant browsing experience</h2>
+			<ul>
+				<li>Hover effects</li>
+				<li>Active links on navbar</li>
+			</ul>
+		</div>
+		<img src="./static/reactive.png" alt="" class="example" />
+	</div>
+	<div class="editorFlex">
+		<div class="reason">
+			<h2>Session based use</h2>
+			<ul>
+				<li>Without session user cannot access webapp routes</li>
+				<li>leaves room for log in/loggout</li>
+			</ul>
+		</div>
+		<img src="./static/session.png" alt="" class="example" />
+	</div>
+	<img src="./static/previous.png" alt="" class="example" />
+	<div class="editorFlex">
+		<div class="reason">
+			<h2>Improved site map</h2>
+			<ul>
+				<li>Landing page is buggy view</li>
+			</ul>
+		</div>
+		<img src="./static/site_map.png" alt="" class="example" />
 	</div>
 </section>
+
 <section id="cs1999-tasks">
 	<div class="phase">
 		<h1>Phase 0</h1>
@@ -96,7 +140,7 @@
 	<div class="phase">
 		<h1>Phase 1</h1>
 		<div class="task-container">
-			<div class="task big">
+			<div class="task">
 				<h2>1-ADD Add more data to the form AND 1-VALID Add basic data validation</h2>
 				<p>
 					I thought a while about this because I realised that every time I add a new property to the system i
@@ -128,13 +172,13 @@
 					the name is the human friendly version we display on the site. Description is a series of an array of
 					strings used to produce multiple <code>&lt;h1&gt;</code> tags that tells the user what each property is
 					for. Defaults is the default value that the form takes. Validation is a value that describes how the
-					validation library \(<a href="https://pypi.org/project/schema/">schema</a>\) should deal with the value,
+					validation library <a href="https://pypi.org/project/schema/">schema</a> should deal with the value,
 					conversion, min size, odd/even, etc. Form describes how the site should render the form input it the type
 					can either be "bool", "num", "select", "text" or "color" each taking its own customization values. Cost
 					is used for calculating cost later. I'll detail how that works in 2-COST.
 				</p>
 			</div>
-			<div class="task big">
+			<div class="task">
 				<h2>1-STYLE Style your editor just how you like it</h2>
 				<p>
 					I wanted to create a nice looking and responsive stylesheet for the site. To do this I used css variables
@@ -179,22 +223,12 @@
 			</div>
 			<div class="task">
 				<h2>2-COST Calculate and save the game cost of the buggy</h2>
-				<p>For the enum data I created dicts with the associated cost like this:</p>
-				<pre><code>power_dict = {
-    "petrol": 4,
-    "fusion": 400,
-    "steam": 3,
-    "bio": 5,
-    "electric": 20,
-    "rocket": 16,
-    "hamster": 3,
-    "thermo": 300,
-    "solar": 40,
-    "wind": 20,
-}</code></pre>
 				<p>
-					and 'hardcoded' them individually everything else was as simple as looping through request, index the
-					dict for cost and adding up
+					Although I wanted to make a centralised way to calculate cost. I couldn't figure out an efficient data
+					structure (maybe a class would work?) that would mean the code for totalling a request would be a clean
+					solution. Instead I decided to write a simple function that for complex items the cost 0 before
+					hardcoding the price relationship later, but for simpler and more common ones, there could be a way that
+					looping through would work.
 				</p>
 			</div>
 			<div class="task">
@@ -229,27 +263,73 @@
 			</div>
 			<div class="task">
 				<h2>3-MULTI Allow different buggies to be created</h2>
-				<!-- TODO: REWRITE -->
 				<p>
-					The syntax for <code>INSERT</code> statements is different to <code>UPDATE</code> so I had to change the
-					way I formatted the string inside the statement
+					Doing this task could be split up into two sections, making the /new route <code>INSERT</code> into the
+					table rather then <code>UPDATE</code> and adding a new edit route to edit the different BUGGIES
 				</p>
-				<pre><code> update_values = ", ".join(
+				<figure>
+					<pre><code> update_values = ", ".join(
     map(lambda a: a + "=?", [*defaults.keys(), "total_cost"])
 )
 cur.execute(
     f"UPDATE buggies set {update_values} WHERE id=?",
     (*msg.values(), calc_price(msg), DEFAULT_BUGGY_ID),
 )</code></pre>
-				<p>became</p>
-				<pre><code>keys = ", ".join([*defaults.keys(), "total_cost"])
+					<p>to</p>
+					<pre><code> keys = ", ".join([*DEFAULTS.keys(), "total_cost"])
 values = ", ".join(
-    map(
-        lambda a: str(database_friendly(a)),
-        [*msg.values(), calc_price(msg)],
-    )
+    map(lambda a: str(database_friendly(a)), [*msg.values(), calc_price(msg)])
 )
-cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")</code></pre>
+try:
+    cur.execute(f"INSERT INTO buggies ({keys}) VALUES ({values})")
+    con.commit()</code></pre>
+					<figcaption><p>Route changes</p></figcaption>
+				</figure>
+				<figure>
+					<pre><code>@app.route("/edit/&lt;buggy_id&gt;", methods=["POST", "GET"])
+@cookie_required
+def edit_buggy(buggy_id):
+    con = sql.connect(DATABASE_FILE)
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    if request.method == "GET":
+        cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (buggy_id,))
+        buggy_db = cur.fetchone()
+        if buggy_db:
+            record = dict(buggy_db)
+            # Copying dict and overwritting the defaults with the buggy values
+            new_defaults = {
+                k: {**v, "defaults": record[k]} for (k, v) in copy.deepcopy(DEFAULTS).items()
+            }
+            return render_template(
+                "buggy-form.jinja", data=new_defaults, url=f"/edit/{buggy_id}"
+            )
+        else:
+            return page_not_found(404)
+    elif request.method == "POST":
+        isValid, msg = validate_data(request.form)
+        if isValid:
+            update_keys = ", ".join(map(lambda a: a + "=?", [*DEFAULTS.keys(), "total_cost"]))
+            try:
+                cur.execute(
+                    f"UPDATE buggies set {update_keys} WHERE id=?",
+                    (
+                        *msg.values(),
+                        calc_price(msg),
+                        buggy_id,
+                    ),
+                )
+                con.commit()
+            except Exception as e:
+                con.rollback()
+                print(e)
+        con.close()
+        return redirect("/")
+</code></pre>
+					<figcaption>
+						<p>New <code>"/edit/&lt;buggy_id&gt;"</code> route (autofill complete)</p>
+					</figcaption>
+				</figure>
 			</div>
 			<div class="task">
 				<h2>3-DEL Allow buggies to be deleted</h2>
